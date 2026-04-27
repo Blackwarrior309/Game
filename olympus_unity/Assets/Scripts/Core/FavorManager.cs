@@ -150,9 +150,35 @@ public class FavorManager : MonoBehaviour
         var g = Gods[god];
         g.templeBuilt    = true;
         g.templeLevel    = 1;
-        g.favorRegenRate = 2f / 60f;
+        g.favorRegenRate = TempleRegenForLevel(1);
         ModifyFavor(god, FavorTempleBuild);
         SynergySystem.Instance.CheckSynergies();
+    }
+
+    // ── Tempel-Upgrade (P3-12) ─────────────────────────────────────────────
+    // Level 1 → 2 → 3. Auto-Effekte (Zeus-Blitz / Hades-Schatten / …)
+    // skalieren über Temple.Level; Favor-Regen wird hier zentral gesetzt:
+    //   L1: 2/min · L2: 3.5/min · L3: 5/min
+    public bool UpgradeTemple(God god)
+    {
+        var g = Gods[god];
+        if (!g.templeBuilt || g.templeLevel >= 3) return false;
+        g.templeLevel++;
+        g.favorRegenRate = TempleRegenForLevel(g.templeLevel);
+        return true;
+    }
+
+    public int GetTempleLevel(God god) => Gods[god].templeLevel;
+
+    static float TempleRegenForLevel(int level)
+    {
+        switch (level)
+        {
+            case 1:  return 2f   / 60f;
+            case 2:  return 3.5f / 60f;
+            case 3:  return 5f   / 60f;
+            default: return 0f;
+        }
     }
 
     public void OnTempleDestroyed(God god)

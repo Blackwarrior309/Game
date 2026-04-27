@@ -63,7 +63,7 @@ Core managers (all in `Assets/Scripts/Core/`):
 - **Reset on new run.** Anything that holds run state must implement `Reset()` and be invoked from `GameManager.StartNewRun()`.
 - **Setup docs alongside code.** `Buildings/BUILDING_SETUP.md` and `Enemies/ENEMY_SETUP.md` document required prefab structure, NavMeshAgent params, child transforms (`TurretHead`, `ShootPoint`, `StompCenter`, etc.), and inspector wiring. When adding/changing a prefab-driven script, update the matching SETUP.md so the Unity-side wiring stays documented.
 
-### Project Status (per phase, ~83 % overall — 90 / 109 tasks)
+### Project Status (per phase, ~83 % overall — 91 / 109 tasks)
 
 The README's status table is the canonical reference; this is what each phase means architecturally so you know where to plug new code in.
 
@@ -71,7 +71,7 @@ The README's status table is the canonical reference; this is what each phase me
 |---|--------------------------------|------------|--------------------------------------------------------------------------------------------------------------------|
 | 1 | Core Prototype                 | 11 / 12    | Player loop, XP, waves 1–3, Pyros, win/lose. **Open:** Arena terrain layout (no script work — Unity scene).        |
 | 2 | Building System                | 13 / 13 ✓  | All building types + build menu + placement.                                                                       |
-| 3 | Favor & Götter (Basis)         | 12 / 13    | Data + HUD + main-god select + temple build/destroy + favor reset + avatar-spawn-system + **all 5 gods full** (`Gods/<God>Interventions.cs` per god + each `<God>Avatar` overrides `DoSpecialAttack`). Hades I1+Avatar reuse the existing `ShadowAllySpawner.SummonShadowsFromDeadEnemies`/`MakeShadowsPermanent`. Ares kill-stacks ride on `PlayerState.damageMultiplier`; war_strategy heals via new `BuildingBase.Heal`. Athena's range/firerate boosts use `TurretBase.SetDetectionRadius`/`SetFireRateMultiplier`. **Open:** temple-tier upgrades 1–3 (P3-12). Earlier passives (Zeus 10th-hit lightning, Hades 15% shadow, Poseidon slow) remain inlined in `PlayerController`/`EnemyBase`/`Temple`. |
+| 3 | Favor & Götter (Basis)         | 13 / 13 ✓  | All 5 gods full + temple-tier upgrades 1–3. Per-god `Gods/<God>Interventions.cs` + `Gods/Avatars/<God>Avatar`. Tempel-Upgrade via `Temple.TryUpgrade` (E-Taste im 4-m-Radius); `Temple.Level` liest live aus `FavorManager.GetTempleLevel`, sodass die Auto-Coroutinen (Zeus-Blitz, Hades-Schatten) ohne Neustart skalieren. Earlier passives (Zeus 10th-hit lightning, Hades 15 % shadow on kill, Poseidon slow on hit) remain inlined in `PlayerController`/`EnemyBase`. |
 | 4 | Hephaistos & Schmiede          | 20 / 20 ✓  | Forge, smithy menu, all 7 legendaries, ore + ore deposits, both Hephaistos interventions (Schmiede-Burst via `PlayerState.damageMultiplier`, Vulkan-Zorn via `Gods/HephaistosInterventions.cs` + `Combat/LavaPuddle.cs`). |
 | 5 | Synergien                      | 14 / 14 ✓  | All 10 synergies + activation/deactivation flow done.                                                              |
 | 6 | Vollständige Feinde & Wellen   | 6 / 7      | Stone Golem, Shadow Wraith, Medusa, Cyclops, GiantPrecursor (Welle 9 mini-boss with slow-aura), waves 1–9 done. **Open:** enemy climbing on buildings (mostly Unity NavMesh-Off-Mesh-Link config). |
