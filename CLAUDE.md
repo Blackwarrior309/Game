@@ -2,27 +2,32 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Repository Layout — Source Lives in Zip Files
+## Repository Layout
 
-This repo contains a Unity 3D game ("Olympus Survivors") whose entire C# source tree is shipped as **four zip archives in the repo root**, not as an extracted file tree:
+The Unity project lives at the repo root under **`olympus_unity/`**:
 
-| Zip                                       | Contains                                                                                                |
-|-------------------------------------------|---------------------------------------------------------------------------------------------------------|
-| `olympus survivors unity phase1.zip`      | Project README + core foundation (`Core/`, `Player/`, `Pickups/`, base `EnemyBase`/`SatyrRunner`, `BuildingBase`) |
-| `olympus enemies.zip`                     | All enemy scripts (`Enemies/`), `Allies/ShadowAlly.cs`, `Combat/ProjectileBase.cs`                       |
-| `olympus buildings.zip`                   | `Buildings/` (towers, walls, support, forge), `UI/BuildMenu/`, `UI/SmithyMenu/`, `World/OreDeposit.cs`   |
-| `olympus survivors unity ui.zip`          | `UI/HUD/`, `UI/MainMenu/`, `UI/EndScreens.cs`, `Assets/UI_Mockup.html`                                   |
+```
+olympus_unity/
+├── README.md                      # Setup guide (Unity version, layers, prefab wiring)
+└── Assets/
+    ├── UI_Mockup.html             # Static HTML mockup of the in-game HUD
+    └── Scripts/
+        ├── Core/                  # Singletons + event bus (PlayerState, FavorManager, …)
+        ├── Player/                # PlayerController + AttackRangeDetector
+        ├── Enemies/               # EnemyBase + every enemy/boss + ENEMY_SETUP.md
+        ├── Allies/                # ShadowAlly (Hades summon)
+        ├── Combat/                # ProjectileBase (shared by towers + Medusa)
+        ├── Buildings/             # BuildingBase, towers, walls, forge + BUILDING_SETUP.md
+        ├── Pickups/               # PickupBase (Ash/Ore/XP)
+        ├── World/                 # OreDeposit
+        └── UI/                    # HUD/, MainMenu/, BuildMenu/, SmithyMenu/, EndScreens
+```
 
-When the four zips are extracted (overlayed on each other), they reconstruct a single Unity project rooted at `olympus_unity/` with `Assets/Scripts/...` and a top-level `olympus_unity/README.md` setup guide.
-
-**Implications for working in this repo:**
-- To read/search code, extract the zips first (e.g. `mkdir -p /tmp/olympus && cd /tmp/olympus && for f in /home/user/Game/*.zip; do unzip -o -q "$f"; done`). Don't extract into the repo working tree — it would pollute the diff. Work on extracted copies, then re-zip with the same internal paths.
-- The phase1 zip contains an older copy of `BuildingBase.cs`, `EnemyBase.cs`, and `SatyrRunner.cs`; the buildings/enemies zips ship newer versions at the same paths. Always prefer the topic-specific zip when the same path appears in two archives, and keep them in sync if you edit either.
-- The repo's own `README.md` is a one-line stub (`# Game`). The real setup guide is `olympus_unity/README.md` inside the phase1 zip.
+The repo-root `README.md` is a one-line stub (`# Game`). The real setup guide is `olympus_unity/README.md`.
 
 ## No Build / Test / Lint Tooling in This Repo
 
-There is no Unity project file, package manifest, CI config, test suite, or linter in the repository — only the zips and a stub README. The README inside the phase1 zip says the project is meant to be opened in **Unity 2022.3 LTS or 2023.x with the 3D Core template + the AI Navigation (NavMesh) package**, but that Unity project is not checked in. Don't fabricate build/test commands; if a task implies running the game, point out that Unity isn't available here and that work must stop at static C# edits inside the zips.
+Only the C# source tree is checked in — there is no Unity project file (`*.csproj`, `Packages/manifest.json`, `ProjectSettings/`), no test suite, no CI config, and no linter. `olympus_unity/README.md` says the project is meant to be opened in **Unity 2022.3 LTS or 2023.x with the 3D Core template + the AI Navigation (NavMesh) package**, but the project metadata is not in the repo. Don't fabricate build/test commands; if a task implies running the game, point out that Unity isn't available here and stop at static C# edits.
 
 ## High-Level Game Architecture
 
@@ -52,7 +57,7 @@ Core managers (all in `Assets/Scripts/Core/`):
 
 - **Layer/Tag setup is part of the contract.** Code uses `LayerMask.GetMask("Enemy"|"Building"|"Ground"|...)` and `GameObject.FindGameObjectWithTag("Player"|"Pyros"|"SpawnPoint"|"Building")`. Layers 6–11 are reserved (Player, Enemy, Pyros, Building, Pickup, Ally) — see `ENEMY_SETUP.md` and the phase1 README.
 - **Comments and identifiers are German** (e.g. `// ── Spieler ──`, `Gewitterflut`, `Schmiede`). New code should match.
-- **File header comment** — every script starts with `// Filename.cs` and `// Ablegen in: Assets/Scripts/...` indicating its target Unity path. Preserve this format when adding scripts; it's how the zip layout is documented.
+- **File header comment** — every script starts with `// Filename.cs` and `// Ablegen in: Assets/Scripts/...` indicating its target Unity path. Preserve this format when adding scripts.
 - **Event subscribe/unsubscribe must be balanced.** All managers pair `OnEnable`/`OnDisable` (or `Start`/`OnDestroy`) `+= / -=` for `GameEvents` and `*State` events. Forgetting the unsubscribe leaks across scene reloads because most managers are `DontDestroyOnLoad`.
 - **Reset on new run.** Anything that holds run state must implement `Reset()` and be invoked from `GameManager.StartNewRun()`.
 - **Setup docs alongside code.** `Buildings/BUILDING_SETUP.md` and `Enemies/ENEMY_SETUP.md` document required prefab structure, NavMeshAgent params, child transforms (`TurretHead`, `ShootPoint`, `StompCenter`, etc.), and inspector wiring. When adding/changing a prefab-driven script, update the matching SETUP.md so the Unity-side wiring stays documented.
