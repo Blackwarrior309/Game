@@ -16,6 +16,7 @@ public class PlayerState : MonoBehaviour
     public float moveSpeed    = 5f;
     public float attackSpeed  = 1f;    // Multiplikator
     public float damage       = 10f;
+    public float damageMultiplier = 1f; // temporäre Buffs (Schmiede-Burst, Berserker, …)
     public float armor        = 0f;
     public float pickupRadius = 3f;
 
@@ -108,7 +109,7 @@ public class PlayerState : MonoBehaviour
     public void Reset()
     {
         hp = maxHp = 100f; moveSpeed = 5f; attackSpeed = 1f;
-        damage = 10f; armor = 0f; pickupRadius = 3f;
+        damage = 10f; damageMultiplier = 1f; armor = 0f; pickupRadius = 3f;
         ash = ore = 0; level = 1; xp = 0f; xpToNextLevel = 100f;
         xpMultiplier = 1f; activeTemples = 0; hasForge = false;
         OnHpChanged?.Invoke(hp, maxHp);

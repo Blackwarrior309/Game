@@ -175,7 +175,7 @@ public class PlayerController : MonoBehaviour
         lookDir.y = 0f;
         if (lookDir.magnitude > 0.01f) transform.rotation = Quaternion.LookRotation(lookDir);
 
-        float finalDamage = PlayerState.Instance.damage;
+        float finalDamage = PlayerState.Instance.damage * PlayerState.Instance.damageMultiplier;
         currentTarget.TakeDamage(finalDamage);
 
         // Zeus-Passiv: jeder 10. Angriff = Blitzschlag AoE
@@ -197,7 +197,7 @@ public class PlayerController : MonoBehaviour
             var enemy = hit.GetComponent<EnemyBase>();
             if (enemy != null)
             {
-                enemy.TakeDamage(PlayerState.Instance.damage * 1.5f * multiplier);
+                enemy.TakeDamage(PlayerState.Instance.damage * PlayerState.Instance.damageMultiplier * 1.5f * multiplier);
                 enemy.SetMeta("killed_by_lightning", true);
                 // Gewitterflut-Synergie: Blitze verlangsamen
                 if (SynergySystem.Instance.IsActive("storm_flood"))
