@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Olympus Survivors — UI Mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --zeus:       #f2e033;
+    --athena:     #66b8f2;
+    --ares:       #e83020;
+    --poseidon:   #3fa8e8;
+    --hades:      #8c33cc;
+    --hephaistos: #f28819;
+    --gold:       #c8a832;
+    --gold-light: #e8c84a;
+    --stone-dark: #0e0c08;
+    --stone-mid:  #1a1610;
+    --stone-light:#2a2218;
+    --stone-edge: #3a3028;
+    --text-main:  #e8dcc8;
+    --text-dim:   #7a6e5a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #060504;
+    font-family: 'Crimson Text', serif;
+    color: var(--text-main);
+    min-height: 100vh;
+  }
+
+  /* ── NAVIGATION TABS ─────────────────────────────────────────────────── */
+  .tabs {
+    display: flex;
+    gap: 2px;
+    padding: 16px 20px 0;
+    position: sticky;
+    top: 0;
+    background: #060504;
+    z-index: 100;
+    border-bottom: 1px solid var(--stone-edge);
+  }
+
+  .tab {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--text-dim);
+    padding: 8px 20px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-bottom: none;
+    background: transparent;
+    transition: all 0.2s;
+  }
+
+  .tab.active {
+    color: var(--gold-light);
+    border-color: var(--stone-edge);
+    background: var(--stone-dark);
+  }
+
+  .tab:hover:not(.active) { color: var(--text-main); }
+
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* ══════════════════════════════════════════════════════════════════════ */
+  /* MAIN MENU                                                              */
+  /* ══════════════════════════════════════════════════════════════════════ */
+  .main-menu {
+    min-height: calc(100vh - 45px);
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(200,168,50,0.08) 0%, transparent 70%),
+      radial-gradient(ellipse 100% 100% at 50% 100%, rgba(10,8,4,1) 0%, transparent 60%),
+      linear-gradient(180deg, #0a0804 0%, #100e08 50%, #0a0804 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Hintergrund-Ornamente */
+  .menu-bg-ring {
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    border: 1px solid rgba(200,168,50,0.06);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+  .menu-bg-ring:nth-child(2) { width: 800px; height: 800px; border-color: rgba(200,168,50,0.04); }
+  .menu-bg-ring:nth-child(3) { width: 400px; height: 400px; border-color: rgba(200,168,50,0.08); }
+
+  /* Titelbeschriftung */
+  .menu-eyebrow {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 0.4em;
+    color: var(--gold);
+    margin-bottom: 12px;
+    opacity: 0.7;
+  }
+
+  .menu-title {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(32px, 6vw, 64px);
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-align: center;
+    line-height: 1;
+    background: linear-gradient(180deg, #fff8e0 0%, var(--gold-light) 40%, var(--gold) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 6px;
+    text-shadow: none;
+  }
+
+  .menu-subtitle {
+    font-family: 'Crimson Text', serif;
+    font-size: 16px;
+    font-style: italic;
+    color: var(--text-dim);
+    letter-spacing: 0.06em;
+    margin-bottom: 8px;
+  }
+
+  .menu-divider {
+    width: 120px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 20px auto;
+  }
+
+  /* Haupt-Buttons */
+  .menu-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    max-width: 280px;
+    margin-bottom: 48px;
+  }
+
+  .menu-btn {
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    padding: 14px 32px;
+    border: 1px solid var(--stone-edge);
+    background: var(--stone-dark);
+    color: var(--text-main);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.2s;
+    text-align: center;
+  }
+
+  .menu-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(200,168,50,0.06), transparent);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .menu-btn:hover {
+    border-color: var(--gold);
+    color: var(--gold-light);
+  }
+
+  .menu-btn:hover::before { opacity: 1; }
+
+  .menu-btn.primary {
+    background: linear-gradient(180deg, rgba(200,168,50,0.12) 0%, rgba(200,168,50,0.06) 100%);
+    border-color: var(--gold);
+    color: var(--gold-light);
+  }
+
+  /* God Selection */
+  .god-select-title {
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    letter-spacing: 0.3em;
+    color: var(--text-dim);
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .god-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    max-width: 600px;
+    width: 100%;
+    margin-bottom: 24px;
+  }
+
+  .god-card {
+    background: var(--stone-dark);
+    border: 1px solid var(--stone-edge);
+    padding: 16px 12px;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.2s;
+  }
+
+  .god-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .god-card:hover { border-color: var(--god-color, var(--gold)); transform: translateY(-2px); }
+  .god-card:hover::after { opacity: 1; background: var(--god-color, var(--gold)); }
+
+  .god-card.selected {
+    border-color: var(--god-color, var(--gold));
+    background: linear-gradient(180deg, rgba(var(--god-color-rgb), 0.1) 0%, transparent 100%);
+  }
+
+  .god-card.selected::after { opacity: 1; background: var(--god-color, var(--gold)); }
+
+  .god-card-icon { font-size: 28px; display: block; margin-bottom: 8px; }
+
+  .god-card-name {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: var(--god-color, var(--text-main));
+    display: block;
+    margin-bottom: 3px;
+  }
+
+  .god-card-sub {
+    font-size: 10px;
+    font-style: italic;
+    color: var(--text-dim);
+  }
+
+  .god-desc-box {
+    max-width: 600px;
+    width: 100%;
+    background: var(--stone-dark);
+    border: 1px solid var(--stone-edge);
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    min-height: 80px;
+  }
+
+  .god-desc-name {
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--gold-light);
+    margin-bottom: 6px;
+    letter-spacing: 0.1em;
+  }
+
+  .god-desc-text {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+
+  /* ══════════════════════════════════════════════════════════════════════ */
+  /* HUD                                                                     */
+  /* ══════════════════════════════════════════════════════════════════════ */
+  .hud-screen {
+    min-height: calc(100vh - 45px);
+    background:
+      radial-gradient(ellipse 60% 40% at 50% 50%, rgba(200,168,50,0.03) 0%, transparent 70%),
+      linear-gradient(180deg, #0a0804 0%, #080604 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Spielfeld-Platzhalter */
+  .arena-placeholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .arena-grid {
+    width: 100%;
+    height: 100%;
+    background-image:
+      linear-gradient(rgba(200,168,50,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(200,168,50,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    position: absolute;
+  }
+
+  .pyros-symbol {
+    font-size: 48px;
+    opacity: 0.15;
+    font-family: 'Cinzel', serif;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+  }
+
+  /* ── HUD LAYOUT ─────────────────────────────────────────────────── */
+  .hud-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    padding: 12px;
+    display: grid;
+    grid-template-areas:
+      "top-left    top-center   top-right"
+      "mid-left    mid-center   mid-right"
+      "bot-left    bot-center   bot-right";
+    grid-template-rows: auto 1fr auto;
+    grid-template-columns: 240px 1fr 200px;
+    gap: 8px;
+  }
+
+  /* ── TOP LEFT: Spieler HP + Dash ───────────────────────────────── */
+  .hud-player {
+    grid-area: top-left;
+    background: linear-gradient(135deg, rgba(10,8,4,0.92) 0%, rgba(20,16,10,0.88) 100%);
+    border: 1px solid var(--stone-edge);
+    border-top: 2px solid var(--gold);
+    padding: 10px 14px;
+    backdrop-filter: blur(4px);
+  }
+
+  .hud-label {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    color: var(--text-dim);
+    margin-bottom: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+
+  .hud-level-badge {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    background: rgba(200,168,50,0.12);
+    padding: 1px 6px;
+    border: 1px solid rgba(200,168,50,0.3);
+  }
+
+  .hp-bar-wrap {
+    position: relative;
+    height: 8px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--stone-edge);
+    margin-bottom: 6px;
+    overflow: hidden;
+  }
+
+  .hp-bar-fill {
+    height: 100%;
+    position: relative;
+    transition: width 0.3s ease;
+  }
+
+  .hp-bar-fill::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 2px; height: 100%;
+    background: rgba(255,255,255,0.6);
+  }
+
+  .hp-fill-high { background: linear-gradient(90deg, #b8920a, #e8c84a); }
+  .hp-fill-mid  { background: linear-gradient(90deg, #b04010, #e06020); }
+  .hp-fill-low  { background: linear-gradient(90deg, #801010, #c02020); animation: hpPulse 0.8s ease-in-out infinite; }
+
+  @keyframes hpPulse {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.6; }
+  }
+
+  .hp-text {
+    font-size: 10px;
+    color: var(--text-dim);
+    text-align: right;
+    margin-bottom: 6px;
+  }
+
+  .xp-bar-wrap {
+    height: 3px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.04);
+    margin-bottom: 8px;
+    overflow: hidden;
+  }
+
+  .xp-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #3060a0, #60a0e0);
+    width: 60%;
+  }
+
+  .dash-row { display: flex; align-items: center; gap: 8px; }
+
+  .dash-icon {
+    width: 22px; height: 22px;
+    border: 1px solid var(--stone-edge);
+    background: rgba(255,255,255,0.04);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .dash-cooldown-overlay {
+    position: absolute; inset: 0;
+    background: rgba(0,0,0,0.6);
+    clip-path: polygon(50% 50%, 50% 0%, 50% 0%);
+  }
+
+  .dash-label {
+    font-size: 9px;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+  }
+
+  /* ── TOP CENTER: Wave + Boss ─────────────────────────────────────── */
+  .hud-wave {
+    grid-area: top-center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .wave-badge {
+    background: linear-gradient(180deg, rgba(10,8,4,0.92) 0%, rgba(20,16,10,0.85) 100%);
+    border: 1px solid var(--stone-edge);
+    border-top: 2px solid var(--gold);
+    padding: 8px 24px;
+    text-align: center;
+    min-width: 200px;
+    backdrop-filter: blur(4px);
+  }
+
+  .wave-number {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    color: var(--gold-light);
+  }
+
+  .wave-timer {
+    font-size: 10px;
+    color: var(--text-dim);
+    font-style: italic;
+  }
+
+  /* Boss HP Bar */
+  .boss-bar-wrap {
+    width: 100%;
+    max-width: 400px;
+    background: linear-gradient(180deg, rgba(10,8,4,0.95) 0%, rgba(20,16,10,0.9) 100%);
+    border: 1px solid rgba(200,168,50,0.3);
+    padding: 8px 14px;
+    backdrop-filter: blur(4px);
+  }
+
+  .boss-name {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: var(--gold-light);
+    text-align: center;
+    margin-bottom: 6px;
+  }
+
+  .boss-hp-track {
+    height: 10px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--stone-edge);
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 4px;
+  }
+
+  .boss-hp-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #601080, #c030e0);
+    width: 42%;
+    position: relative;
+  }
+
+  .boss-hp-fill::after {
+    content: '';
+    position: absolute;
+    top: 0; bottom: 0; right: 0;
+    width: 3px;
+    background: rgba(255,255,255,0.5);
+    box-shadow: 0 0 6px rgba(200,100,255,0.8);
+  }
+
+  .boss-phase-dots {
+    display: flex; gap: 6px; justify-content: center;
+  }
+
+  .phase-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    border: 1px solid var(--stone-edge);
+    background: transparent;
+  }
+
+  .phase-dot.active { background: var(--gold); border-color: var(--gold); }
+
+  /* ── TOP RIGHT: Pyros + Ressourcen ──────────────────────────────── */
+  .hud-pyros {
+    grid-area: top-right;
+    background: linear-gradient(135deg, rgba(10,8,4,0.92) 0%, rgba(20,16,10,0.88) 100%);
+    border: 1px solid var(--stone-edge);
+    border-top: 2px solid #c03015;
+    padding: 10px 14px;
+    backdrop-filter: blur(4px);
+  }
+
+  .pyros-label {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--text-dim);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .flame-icon { font-size: 12px; }
+
+  .resource-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--stone-edge);
+  }
+
+  .resource-icon { font-size: 12px; }
+
+  .resource-value {
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--gold-light);
+    margin-right: 4px;
+  }
+
+  .resource-label {
+    font-size: 9px;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+  }
+
+  /* ── BOTTOM LEFT: Favor-Leisten ──────────────────────────────────── */
+  .hud-favor {
+    grid-area: bot-left;
+    background: linear-gradient(135deg, rgba(10,8,4,0.94) 0%, rgba(20,16,10,0.90) 100%);
+    border: 1px solid var(--stone-edge);
+    border-bottom: 2px solid var(--gold);
+    padding: 10px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    backdrop-filter: blur(4px);
+  }
+
+  .favor-title {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    color: var(--text-dim);
+    margin-bottom: 4px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid var(--stone-edge);
+  }
+
+  .favor-row {
+    display: grid;
+    grid-template-columns: 16px 55px 1fr 24px;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .favor-icon { font-size: 11px; text-align: center; }
+
+  .favor-name {
+    font-family: 'Cinzel', serif;
+    font-size: 8px;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  .favor-name.active { color: var(--text-main); }
+
+  .favor-track {
+    height: 5px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--stone-edge);
+    position: relative;
+    overflow: visible;
+  }
+
+  .favor-fill {
+    height: 100%;
+    transition: width 0.4s ease;
+  }
+
+  /* Threshold-Marker */
+  .favor-markers {
+    position: absolute;
+    inset: -2px;
+    pointer-events: none;
+  }
+
+  .favor-marker {
+    position: absolute;
+    top: -2px;
+    width: 1px;
+    height: calc(100% + 4px);
+    background: rgba(255,255,255,0.2);
+  }
+
+  .favor-val {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    color: var(--text-dim);
+    text-align: right;
+  }
+
+  .favor-val.bright { color: var(--gold-light); }
+
+  /* Passiv-Badge */
+  .favor-passive-badge {
+    display: inline-block;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    margin-left: 3px;
+    vertical-align: middle;
+    animation: passivePulse 1.5s ease-in-out infinite;
+  }
+
+  @keyframes passivePulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.5; transform: scale(0.7); }
+  }
+
+  /* Synergie-Icons */
+  .hud-synergies {
+    display: flex; gap: 4px; flex-wrap: wrap; padding-top: 6px;
+    border-top: 1px solid var(--stone-edge);
+    margin-top: 2px;
+  }
+
+  .synergy-chip {
+    font-size: 9px;
+    padding: 2px 6px;
+    background: rgba(200,168,50,0.1);
+    border: 1px solid rgba(200,168,50,0.25);
+    color: var(--gold);
+    font-family: 'Cinzel', serif;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+  }
+
+  /* ── BOTTOM CENTER: Waffen ───────────────────────────────────────── */
+  .hud-weapons {
+    grid-area: bot-center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+  }
+
+  .weapon-slots {
+    display: flex;
+    gap: 10px;
+    background: linear-gradient(180deg, rgba(10,8,4,0.94) 0%, rgba(20,16,10,0.90) 100%);
+    border: 1px solid var(--stone-edge);
+    border-bottom: 2px solid var(--gold);
+    padding: 10px 16px;
+    backdrop-filter: blur(4px);
+  }
+
+  .weapon-slot {
+    width: 52px; height: 52px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--stone-edge);
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .weapon-slot.legendary {
+    border-color: var(--gold);
+    box-shadow: 0 0 8px rgba(200,168,50,0.3), inset 0 0 8px rgba(200,168,50,0.05);
+  }
+
+  .weapon-slot-icon { font-size: 22px; }
+
+  .weapon-stars {
+    position: absolute;
+    bottom: 2px; right: 2px;
+    font-size: 7px;
+    color: var(--gold);
+    letter-spacing: -1px;
+  }
+
+  .legendary-mark {
+    position: absolute;
+    top: 2px; left: 2px;
+    font-size: 8px;
+    color: var(--gold-light);
+  }
+
+  .artifact-strip {
+    display: flex; gap: 6px;
+  }
+
+  .artifact-icon {
+    width: 24px; height: 24px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--stone-edge);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px;
+  }
+
+  /* ── BOTTOM RIGHT: Building ──────────────────────────────────────── */
+  .hud-building {
+    grid-area: bot-right;
+    background: linear-gradient(135deg, rgba(10,8,4,0.92) 0%, rgba(20,16,10,0.88) 100%);
+    border: 1px solid var(--stone-edge);
+    border-bottom: 2px solid var(--gold);
+    padding: 10px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    justify-content: flex-end;
+    backdrop-filter: blur(4px);
+  }
+
+  .build-hint {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--text-dim);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .key-badge {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid var(--stone-edge);
+    padding: 1px 5px;
+    font-size: 9px;
+    color: var(--text-main);
+    font-family: 'Cinzel', serif;
+    letter-spacing: 0.1em;
+  }
+
+  .build-hint.inactive { opacity: 0.35; }
+
+  /* Temple slots */
+  .temple-slots { display: flex; gap: 4px; }
+
+  .temple-slot {
+    width: 18px; height: 18px;
+    border: 1px solid var(--stone-edge);
+    background: rgba(255,255,255,0.03);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px;
+  }
+
+  .temple-slot.filled {
+    border-color: var(--gold);
+    background: rgba(200,168,50,0.1);
+  }
+
+  /* ── SYNERGIE NOTIFICATION (Mitte) ─────────────────────────────── */
+  .synergy-notification {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(180deg, rgba(10,8,4,0.97) 0%, rgba(20,16,10,0.95) 100%);
+    border: 1px solid var(--gold);
+    border-top: 2px solid var(--gold-light);
+    padding: 12px 28px;
+    text-align: center;
+    pointer-events: none;
+    box-shadow: 0 0 30px rgba(200,168,50,0.15);
+    animation: synergyPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+
+  @keyframes synergyPop {
+    from { opacity: 0; transform: translate(-50%, -50%) scale(0.85); }
+    to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  }
+
+  .syn-title {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 0.35em;
+    color: var(--text-dim);
+    margin-bottom: 4px;
+  }
+
+  .syn-name {
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: var(--gold-light);
+  }
+
+  /* ── LEVEL UP OVERLAY ───────────────────────────────────────────── */
+  .levelup-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(6,5,4,0.75);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    backdrop-filter: blur(2px);
+    pointer-events: none;
+  }
+
+  .levelup-title {
+    font-family: 'Cinzel', serif;
+    font-size: 24px;
+    font-weight: 900;
+    letter-spacing: 0.3em;
+    background: linear-gradient(180deg, #fff8e0 0%, var(--gold-light) 60%, var(--gold) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .upgrade-cards {
+    display: flex;
+    gap: 12px;
+  }
+
+  .upgrade-card {
+    width: 160px;
+    background: linear-gradient(180deg, rgba(20,16,10,0.98) 0%, rgba(12,10,6,0.98) 100%);
+    border: 1px solid var(--stone-edge);
+    padding: 16px 14px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .upgrade-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+  }
+
+  .upgrade-card.weapon::before   { background: var(--gold); }
+  .upgrade-card.passive::before  { background: #50c060; }
+  .upgrade-card.building::before { background: #5080c0; }
+
+  .upgrade-card:hover {
+    border-color: var(--gold);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+  }
+
+  .card-icon    { font-size: 28px; display: block; margin-bottom: 10px; }
+  .card-name    { font-family: 'Cinzel', serif; font-size: 11px; font-weight: 700; letter-spacing: 0.15em; color: var(--text-main); margin-bottom: 6px; }
+  .card-desc    { font-size: 11px; color: var(--text-dim); line-height: 1.4; }
+  .card-cat     { font-family: 'Cinzel', serif; font-size: 8px; letter-spacing: 0.2em; color: var(--text-dim); margin-top: 8px; opacity: 0.5; }
+
+  /* Responsive */
+  @media (max-width: 700px) {
+    .hud-overlay {
+      grid-template-columns: 180px 1fr 150px;
+    }
+    .god-grid { grid-template-columns: repeat(2, 1fr); }
+    .upgrade-cards { flex-direction: column; }
+    .upgrade-card { width: 220px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="tabs">
+  <div class="tab active" onclick="showScreen('main-menu-screen')">HAUPTMENÜ</div>
+  <div class="tab" onclick="showScreen('hud-screen')">HUD — KAMPF</div>
+  <div class="tab" onclick="showScreen('hud-boss-screen')">HUD — BOSSKAMPF</div>
+  <div class="tab" onclick="showScreen('levelup-screen')">LEVEL UP</div>
+</div>
+
+<!-- ══ MAIN MENU ══════════════════════════════════════════════════════════ -->
+<div id="main-menu-screen" class="screen active">
+  <div class="main-menu">
+    <div class="menu-bg-ring"></div>
+    <div class="menu-bg-ring"></div>
+    <div class="menu-bg-ring"></div>
+
+    <div class="menu-eyebrow">⚡ GRIECHISCHE MYTHOLOGIE · SURVIVOR-ROGUELITE ⚡</div>
+    <div class="menu-title">OLYMPUS<br>SURVIVORS</div>
+    <div class="menu-subtitle">Verteidige die heilige Flamme des Pyros</div>
+    <div class="menu-divider"></div>
+
+    <div class="menu-buttons">
+      <div class="menu-btn primary" onclick="showGodSelect()">⚔ NEUES SPIEL</div>
+      <div class="menu-btn" onclick="">🏛 UPGRADES</div>
+      <div class="menu-btn" onclick="">✕ BEENDEN</div>
+    </div>
+
+    <!-- God Selection (versteckt bis "Neues Spiel") -->
+    <div id="god-select" style="display:none; flex-direction:column; align-items:center; width:100%; max-width:640px;">
+      <div class="god-select-title">WÄHLE DEINEN HAUPTGOTT</div>
+
+      <div class="god-grid">
+        <div class="god-card selected" style="--god-color: var(--zeus)" onclick="selectGod(this,'ZEUS','Jeder 10. Angriff schlägt als Blitz ein und trifft alle Feinde im Umkreis. Avatar: Zeus erscheint und kämpft unaufhaltsam.')">
+          <span class="god-card-icon">⚡</span>
+          <span class="god-card-name" style="color:var(--zeus)">ZEUS</span>
+          <span class="god-card-sub">Gott des Donners</span>
+        </div>
+        <div class="god-card" style="--god-color: var(--athena)" onclick="selectGod(this,'ATHENA','Schutzschild regeneriert sich alle 30s. Alle Gebäude +30% HP. Avatar: Magische Barriere um den Pyros.')">
+          <span class="god-card-icon">🛡</span>
+          <span class="god-card-name" style="color:var(--athena)">ATHENA</span>
+          <span class="god-card-sub">Göttin der Weisheit</span>
+        </div>
+        <div class="god-card" style="--god-color: var(--ares)" onclick="selectGod(this,'ARES','Jeder Kill gibt +5% Schaden für 3s (bis 50%). Berserker: 2× Schaden, 2× Speed, 20 Sekunden.')">
+          <span class="god-card-icon">🗡</span>
+          <span class="god-card-name" style="color:var(--ares)">ARES</span>
+          <span class="god-card-sub">Gott des Krieges</span>
+        </div>
+        <div class="god-card" style="--god-color: var(--poseidon)" onclick="selectGod(this,'POSEIDON','Feinde die dich treffen werden verlangsamt (-40% Speed). Flutwellen und Erdspaltungen erschüttern die Arena.')">
+          <span class="god-card-icon">🌊</span>
+          <span class="god-card-name" style="color:var(--poseidon)">POSEIDON</span>
+          <span class="god-card-sub">Gott des Meeres</span>
+        </div>
+        <div class="god-card" style="--god-color: var(--hades)" onclick="selectGod(this,'HADES','Getötete Feinde haben 15% Chance als Schattenkrieger zurückzukehren. Unterwelt-Tor tötet Einheiten sofort.')">
+          <span class="god-card-icon">💀</span>
+          <span class="god-card-name" style="color:var(--hades)">HADES</span>
+          <span class="god-card-sub">Herr der Unterwelt</span>
+        </div>
+        <div class="god-card" style="--god-color: var(--hephaistos)" onclick="selectGod(this,'HEPHAISTOS','Meistere die Schmiede. Schmiedet legendäre Waffen und kombiniere göttliche Kräfte mit Feuer und Eisen.')">
+          <span class="god-card-icon">🔨</span>
+          <span class="god-card-name" style="color:var(--hephaistos)">HEPHAISTOS</span>
+          <span class="god-card-sub">Gott der Schmiede</span>
+        </div>
+      </div>
+
+      <div class="god-desc-box">
+        <div class="god-desc-name" id="god-desc-name">ZEUS — Gott des Donners</div>
+        <div class="god-desc-text" id="god-desc-text">Jeder 10. Angriff schlägt als Blitz ein und trifft alle Feinde im Umkreis. Avatar: Zeus erscheint und kämpft unaufhaltsam.</div>
+      </div>
+
+      <div style="display:flex; gap:10px;">
+        <div class="menu-btn" onclick="hideGodSelect()">← ZURÜCK</div>
+        <div class="menu-btn primary">⚡ KAMPF BEGINNEN</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ HUD — KAMPF ════════════════════════════════════════════════════════ -->
+<div id="hud-screen" class="screen">
+  <div class="hud-screen" style="height: calc(100vh - 45px);">
+    <div class="arena-placeholder">
+      <div class="arena-grid"></div>
+      <div class="pyros-symbol">🔥 PYROS</div>
+    </div>
+
+    <div class="hud-overlay">
+      <!-- TOP LEFT: Spieler -->
+      <div class="hud-player">
+        <div class="hud-label">
+          ALEXIOS
+          <span class="hud-level-badge">LVL 7</span>
+        </div>
+        <div class="hp-bar-wrap">
+          <div class="hp-bar-fill hp-fill-high" style="width:78%"></div>
+        </div>
+        <div class="hp-text">78 / 100</div>
+        <div class="xp-bar-wrap"><div class="xp-bar-fill" style="width:60%"></div></div>
+        <div class="dash-row">
+          <div class="dash-icon">💨</div>
+          <div class="dash-label">DASH BEREIT</div>
+        </div>
+      </div>
+
+      <!-- TOP CENTER: Wave -->
+      <div class="hud-wave">
+        <div class="wave-badge">
+          <div class="wave-number">WELLE  6 / 10</div>
+          <div class="wave-timer">Feinde: 14</div>
+        </div>
+      </div>
+
+      <!-- TOP RIGHT: Pyros + Ressourcen -->
+      <div class="hud-pyros">
+        <div class="pyros-label"><span class="flame-icon">🔥</span> PYROS</div>
+        <div class="hp-bar-wrap">
+          <div class="hp-bar-fill hp-fill-mid" style="width:63%"></div>
+        </div>
+        <div class="hp-text">315 / 500</div>
+        <div class="resource-row">
+          <span class="resource-icon">🌫</span>
+          <span class="resource-value">240</span>
+          <span class="resource-label">ASCHE</span>
+          <span style="margin-left:8px" class="resource-icon">🪨</span>
+          <span class="resource-value">45</span>
+          <span class="resource-label">ERZ</span>
+        </div>
+      </div>
+
+      <!-- MIDDLE (leer — Spielfeld) -->
+      <div style="grid-area: mid-left"></div>
+      <div style="grid-area: mid-center; display:flex; align-items:center; justify-content:center;">
+        <!-- Synergie-Notification Beispiel -->
+        <div class="synergy-notification">
+          <div class="syn-title">SYNERGIE AKTIV</div>
+          <div class="syn-name">⚡🌊 GEWITTERFLUT</div>
+        </div>
+      </div>
+      <div style="grid-area: mid-right"></div>
+
+      <!-- BOTTOM LEFT: Favor -->
+      <div class="hud-favor">
+        <div class="favor-title">GÖTTERGUNST</div>
+
+        <!-- Zeus -->
+        <div class="favor-row">
+          <span class="favor-icon">⚡</span>
+          <span class="favor-name active">ZEUS <span class="favor-passive-badge" style="background:var(--zeus)"></span></span>
+          <div class="favor-track">
+            <div class="favor-fill" style="width:82%; background:var(--zeus); opacity:0.85;"></div>
+            <div class="favor-markers">
+              <div class="favor-marker" style="left:25%"></div>
+              <div class="favor-marker" style="left:50%"></div>
+              <div class="favor-marker" style="left:75%"></div>
+            </div>
+          </div>
+          <span class="favor-val bright">82</span>
+        </div>
+
+        <!-- Athena -->
+        <div class="favor-row">
+          <span class="favor-icon">🛡</span>
+          <span class="favor-name">ATHENA</span>
+          <div class="favor-track">
+            <div class="favor-fill" style="width:28%; background:var(--athena); opacity:0.85;"></div>
+            <div class="favor-markers">
+              <div class="favor-marker" style="left:25%"></div>
+              <div class="favor-marker" style="left:50%"></div>
+              <div class="favor-marker" style="left:75%"></div>
+            </div>
+          </div>
+          <span class="favor-val">28</span>
+        </div>
+
+        <!-- Ares -->
+        <div class="favor-row">
+          <span class="favor-icon">🗡</span>
+          <span class="favor-name">ARES</span>
+          <div class="favor-track">
+            <div class="favor-fill" style="width:12%; background:var(--ares); opacity:0.85;"></div>
+            <div class="favor-markers">
+              <div class="favor-marker" style="left:25%"></div>
+              <div class="favor-marker" style="left:50%"></div>
+              <div class="favor-marker" style="left:75%"></div>
+            </div>
+          </div>
+          <span class="favor-val">12</span>
+        </div>
+
+        <!-- Poseidon -->
+        <div class="favor-row">
+          <span class="favor-icon">🌊</span>
+          <span class="favor-name active">POSEIDON <span class="favor-passive-badge" style="background:var(--poseidon)"></span></span>
+          <div class="favor-track">
+            <div class="favor-fill" style="width:65%; background:var(--poseidon); opacity:0.85;"></div>
+            <div class="favor-markers">
+              <div class="favor-marker" style="left:25%"></div>
+              <div class="favor-marker" style="left:50%"></div>
+              <div class="favor-marker" style="left:75%"></div>
+            </div>
+          </div>
+          <span class="favor-val bright">65</span>
+        </div>
+
+        <!-- Hades -->
+        <div class="favor-row">
+          <span class="favor-icon">💀</span>
+          <span class="favor-name">HADES</span>
+          <div class="favor-track">
+            <div class="favor-fill" style="width:5%; background:var(--hades); opacity:0.85;"></div>
+            <div class="favor-markers">
+              <div class="favor-marker" style="left:25%"></div>
+              <div class="favor-marker" style="left:50%"></div>
+              <div class="favor-marker" style="left:75%"></div>
+            </div>
+          </div>
+          <span class="favor-val">5</span>
+        </div>
+
+        <!-- Hephaistos -->
+        <div class="favor-row">
+          <span class="favor-icon">🔨</span>
+          <span class="favor-name">HEPHAISTOS</span>
+          <div class="favor-track">
+            <div class="favor-fill" style="width:38%; background:var(--hephaistos); opacity:0.85;"></div>
+            <div class="favor-markers">
+              <div class="favor-marker" style="left:25%"></div>
+              <div class="favor-marker" style="left:50%"></div>
+              <div class="favor-marker" style="left:75%"></div>
+            </div>
+          </div>
+          <span class="favor-val">38</span>
+        </div>
+
+        <!-- Aktive Synergien -->
+        <div class="hud-synergies">
+          <span class="synergy-chip">⚡🌊 GEWITTERFLUT</span>
+        </div>
+      </div>
+
+      <!-- BOTTOM CENTER: Waffen -->
+      <div class="hud-weapons">
+        <div class="artifact-strip">
+          <div class="artifact-icon">💪</div>
+          <div class="artifact-icon">👟</div>
+          <div class="artifact-icon">🌟</div>
+        </div>
+        <div class="weapon-slots">
+          <div class="weapon-slot">
+            <span class="weapon-slot-icon">⚡</span>
+            <span class="weapon-stars">★★★</span>
+          </div>
+          <div class="weapon-slot legendary">
+            <span class="legendary-mark">✦</span>
+            <span class="weapon-slot-icon">🏹</span>
+            <span class="weapon-stars" style="color:var(--gold)">LEG</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- BOTTOM RIGHT: Building -->
+      <div class="hud-building">
+        <div class="hud-label">TEMPEL</div>
+        <div class="temple-slots">
+          <div class="temple-slot filled">⚡</div>
+          <div class="temple-slot filled">🌊</div>
+          <div class="temple-slot">·</div>
+        </div>
+        <div class="build-hint"><span class="key-badge">B</span> BAUEN</div>
+        <div class="build-hint inactive"><span class="key-badge">F</span> SCHMIEDE</div>
+        <div class="build-hint" style="color:var(--gold); font-size:9px;"><span class="key-badge">G</span> AVATAR</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ HUD — BOSSKAMPF ═══════════════════════════════════════════════════ -->
+<div id="hud-boss-screen" class="screen">
+  <div class="hud-screen" style="height: calc(100vh - 45px);">
+    <div class="arena-placeholder">
+      <div class="arena-grid"></div>
+      <div class="pyros-symbol" style="font-size:32px; opacity:0.08; color:#c030e0">⏳ KRONOS</div>
+    </div>
+    <div class="hud-overlay">
+      <div class="hud-player">
+        <div class="hud-label">ALEXIOS <span class="hud-level-badge">LVL 10</span></div>
+        <div class="hp-bar-wrap"><div class="hp-bar-fill hp-fill-low" style="width:22%"></div></div>
+        <div class="hp-text">22 / 130</div>
+        <div class="xp-bar-wrap"><div class="xp-bar-fill" style="width:90%"></div></div>
+        <div class="dash-row">
+          <div class="dash-icon" style="opacity:0.4">💨<div class="dash-cooldown-overlay"></div></div>
+          <div class="dash-label" style="color:var(--text-dim)">COOLDOWN 1.2s</div>
+        </div>
+      </div>
+
+      <!-- BOSS BAR -->
+      <div class="hud-wave">
+        <div class="wave-badge">
+          <div class="wave-number">WELLE  10 / 10</div>
+        </div>
+        <div class="boss-bar-wrap">
+          <div class="boss-name">⏳ KRONOS — HERR DER ZEIT</div>
+          <div class="boss-hp-track">
+            <div class="boss-hp-fill" style="width:42%"></div>
+          </div>
+          <div class="boss-phase-dots">
+            <div class="phase-dot"></div>
+            <div class="phase-dot"></div>
+            <div class="phase-dot active"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hud-pyros">
+        <div class="pyros-label"><span class="flame-icon">🔥</span> PYROS</div>
+        <div class="hp-bar-wrap"><div class="hp-bar-fill hp-fill-high" style="width:88%"></div></div>
+        <div class="hp-text">440 / 500</div>
+        <div class="resource-row">
+          <span class="resource-icon">🌫</span><span class="resource-value">60</span><span class="resource-label">ASCHE</span>
+          <span style="margin-left:8px" class="resource-icon">🪨</span><span class="resource-value">10</span><span class="resource-label">ERZ</span>
+        </div>
+      </div>
+
+      <div style="grid-area:mid-left"></div>
+      <div style="grid-area:mid-center"></div>
+      <div style="grid-area:mid-right"></div>
+
+      <div class="hud-favor">
+        <div class="favor-title">GÖTTERGUNST</div>
+        <div class="favor-row">
+          <span class="favor-icon">⚡</span>
+          <span class="favor-name active">ZEUS <span class="favor-passive-badge" style="background:var(--zeus)"></span></span>
+          <div class="favor-track"><div class="favor-fill" style="width:100%; background:var(--zeus); opacity:0.85;"></div><div class="favor-markers"><div class="favor-marker" style="left:25%"></div><div class="favor-marker" style="left:50%"></div><div class="favor-marker" style="left:75%"></div></div></div>
+          <span class="favor-val bright">100</span>
+        </div>
+        <div class="favor-row">
+          <span class="favor-icon">🛡</span>
+          <span class="favor-name active" style="color:var(--text-dim); opacity:0.5">ATHENA ⚠</span>
+          <div class="favor-track" style="opacity:0.4"><div class="favor-fill" style="width:55%; background:var(--athena);"></div></div>
+          <span class="favor-val" style="opacity:0.4">55</span>
+        </div>
+        <div class="favor-row">
+          <span class="favor-icon">🗡</span>
+          <span class="favor-name active">ARES <span class="favor-passive-badge" style="background:var(--ares)"></span></span>
+          <div class="favor-track"><div class="favor-fill" style="width:72%; background:var(--ares); opacity:0.85;"></div><div class="favor-markers"><div class="favor-marker" style="left:25%"></div><div class="favor-marker" style="left:50%"></div><div class="favor-marker" style="left:75%"></div></div></div>
+          <span class="favor-val bright">72</span>
+        </div>
+        <div class="favor-row"><span class="favor-icon">🌊</span><span class="favor-name">POSEIDON</span><div class="favor-track"><div class="favor-fill" style="width:20%; background:var(--poseidon); opacity:0.85;"></div></div><span class="favor-val">20</span></div>
+        <div class="favor-row"><span class="favor-icon">💀</span><span class="favor-name">HADES</span><div class="favor-track"><div class="favor-fill" style="width:8%; background:var(--hades); opacity:0.85;"></div></div><span class="favor-val">8</span></div>
+        <div class="favor-row">
+          <span class="favor-icon">🔨</span>
+          <span class="favor-name active">HEPHAIST. <span class="favor-passive-badge" style="background:var(--hephaistos)"></span></span>
+          <div class="favor-track"><div class="favor-fill" style="width:60%; background:var(--hephaistos); opacity:0.85;"></div><div class="favor-markers"><div class="favor-marker" style="left:25%"></div><div class="favor-marker" style="left:50%"></div><div class="favor-marker" style="left:75%"></div></div></div>
+          <span class="favor-val bright">60</span>
+        </div>
+        <div class="hud-synergies">
+          <span class="synergy-chip">⚡🗡 KRIEGSGOTT</span>
+          <span class="synergy-chip">🔨⚡ HIMMELSFEUER</span>
+        </div>
+      </div>
+
+      <div class="hud-weapons">
+        <div class="artifact-strip">
+          <div class="artifact-icon">💪</div><div class="artifact-icon">👟</div><div class="artifact-icon">⚡</div><div class="artifact-icon">🌟</div>
+        </div>
+        <div class="weapon-slots">
+          <div class="weapon-slot legendary"><span class="legendary-mark">✦</span><span class="weapon-slot-icon">⚡</span><span class="weapon-stars" style="color:var(--gold)">LEG</span></div>
+          <div class="weapon-slot legendary"><span class="legendary-mark">✦</span><span class="weapon-slot-icon">🔥</span><span class="weapon-stars" style="color:var(--gold)">LEG</span></div>
+        </div>
+      </div>
+
+      <div class="hud-building">
+        <div class="hud-label">TEMPEL</div>
+        <div class="temple-slots">
+          <div class="temple-slot filled">⚡</div>
+          <div class="temple-slot filled">🗡</div>
+          <div class="temple-slot filled">🔨</div>
+        </div>
+        <div class="build-hint"><span class="key-badge">B</span> BAUEN</div>
+        <div class="build-hint"><span class="key-badge">F</span> SCHMIEDE</div>
+        <div class="build-hint" style="color:var(--gold)"><span class="key-badge">G</span> ZEUS AVATAR!</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ LEVEL UP ═══════════════════════════════════════════════════════════ -->
+<div id="levelup-screen" class="screen">
+  <div class="hud-screen" style="height: calc(100vh - 45px); display:flex; align-items:center; justify-content:center;">
+    <div class="arena-placeholder"><div class="arena-grid"></div></div>
+    <div class="levelup-overlay" style="position:relative; inset:unset; background:transparent; width:100%; height:100%;">
+      <div class="levelup-title">AUFSTIEG</div>
+      <div style="font-size:12px; letter-spacing:0.2em; color:var(--text-dim); font-family:'Cinzel',serif;">WÄHLE EINE GABE DER GÖTTER</div>
+      <div class="upgrade-cards">
+        <div class="upgrade-card weapon">
+          <span class="card-icon">⚡</span>
+          <div class="card-name">BLITZDOLCH</div>
+          <div class="card-desc">Kettenblitze bei jedem Kill. Trifft bis zu 3 weitere Feinde.</div>
+          <div class="card-cat">WAFFE</div>
+        </div>
+        <div class="upgrade-card passive">
+          <span class="card-icon">💪</span>
+          <div class="card-name">HERKULES-GÜRTEL</div>
+          <div class="card-desc">+30 maximale Lebenspunkte. Du wirst stärker.</div>
+          <div class="card-cat">PASSIV</div>
+        </div>
+        <div class="upgrade-card passive">
+          <span class="card-icon">🌟</span>
+          <div class="card-name">GOLDENES VLIES</div>
+          <div class="card-desc">+25% XP-Gewinn. Levelups kommen schneller.</div>
+          <div class="card-cat">PASSIV</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    const idx = ['main-menu-screen','hud-screen','hud-boss-screen','levelup-screen'].indexOf(id);
+    document.querySelectorAll('.tab')[idx].classList.add('active');
+  }
+
+  function showGodSelect() {
+    document.querySelector('.menu-buttons').style.display = 'none';
+    document.getElementById('god-select').style.display = 'flex';
+  }
+
+  function hideGodSelect() {
+    document.querySelector('.menu-buttons').style.display = 'flex';
+    document.getElementById('god-select').style.display = 'none';
+  }
+
+  function selectGod(el, name, desc) {
+    document.querySelectorAll('.god-card').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    document.getElementById('god-desc-name').textContent = name + ' — ' + el.querySelector('.god-card-sub').textContent;
+    document.getElementById('god-desc-text').textContent = desc;
+  }
+</script>
+</body>
+</html>
