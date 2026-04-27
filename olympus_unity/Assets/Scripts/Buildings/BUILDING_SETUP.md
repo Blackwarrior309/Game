@@ -170,6 +170,38 @@ HephaistosForge (StaticBody3D)
 ```
 **Achtung:** Nur 1 Schmiede pro Run! (Singleton + Awake-Check)
 
+#### Hephaistos-Interventions-Prefabs
+
+Werden von `Gods/HephaistosInterventions.cs` gespawnt (Singletons-GameObject).
+Keine Gebäude — Effekt-Prefabs für Vulkan-Zorn (Intervention 2).
+
+**LavaBoulder.prefab**
+```
+LavaBoulder (Rigidbody isKinematic + SphereCollider isTrigger)
+├── Mesh (Sphere, glühend-rot Emission-Material)
+├── ParticleSystem "TrailFX" (Funken/Rauch beim Fall)
+└── ProjectileBase.cs
+    ├── speed:      18
+    ├── lifetime:   2
+    └── aoeRadius:  3   (AoE beim Aufprall)
+```
+
+**LavaPuddle.prefab**
+```
+LavaPuddle (Empty Transform — kein Collider nötig)
+├── Mesh (flacher Disc, Emission-Material lava-orange)
+├── ParticleSystem "LavaFX" (blubbernde Lava-Partikel)
+└── LavaPuddle.cs
+    ├── radius:    2.5
+    ├── dpsDamage: 8
+    ├── duration:  5
+    └── tickRate:  0.25
+```
+
+Im `HephaistosInterventions`-Inspector zuweisen:
+`lavaBoulderPrefab` → LavaBoulder.prefab,
+`lavaPuddlePrefab`  → LavaPuddle.prefab.
+
 ---
 
 ### Temple_Zeus.prefab (Beispiel, alle 5 gleich aufgebaut)
@@ -271,6 +303,7 @@ Auf Singletons-GameObject:
 - [x] SmithyMenuController (3 Tabs)
 - [x] WeaponUpgradeCardUI + LegendaryWeaponCardUI
 - [x] OreDeposit (E-Halten, Respawn, Lavameer-Synergie)
+- [x] HephaistosInterventions (Schmiede-Burst + Vulkan-Zorn, LavaBoulder + LavaPuddle)
 
 ## Offen
 

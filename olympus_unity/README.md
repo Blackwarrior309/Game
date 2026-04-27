@@ -57,6 +57,7 @@ Alle Manager-Scripts auf ein einziges **"Singletons" GameObject**:
 - `SynergySystem`
 - `WaveManager`
 - `LevelUpSystem`
+- `HephaistosInterventions` (hört auf Favor-Schwellen, spawnt LavaBoulder/LavaPuddle)
 
 Dieses GameObject mit **DontDestroyOnLoad** bleibt über Szenen erhalten.
 
