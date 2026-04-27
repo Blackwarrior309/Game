@@ -78,8 +78,9 @@ lehnt Hephaistos sowieso ab, der Spawn-Pfad wird nie betreten.)
 - [x] **P3-05 Zeus** — Kettenblitz-Avatar + Blitzeinschlag/Donnersturm-Interventionen
 - [x] **P3-06 Athena** — Pyros-Barriere-Avatar + HP-Regen-Passiv +
       Strategische-Übersicht/Tempo-Schub-Interventionen
-- [ ] **P3-07 Ares** — Kill-Streak-Speed, Kriegs-Strategie-Synergie
-      (Gebäude unzerstörbar während Berserker), Forced-Target-Aggro
+- [x] **P3-07 Ares** — Kill-Streak-Avatar mit Aggro-Pull + Kriegsschrei/
+      Berserker-Interventionen, Kill-Streak-Passiv über damageMultiplier,
+      war_strategy-Synergie heilt Gebäude per BuildingBase.Heal
 - [ ] **P3-08 Poseidon** — gerichtete Linien-Flutwelle, Wassermauern als
       kurzlebige NavMesh-Obstacles
 - [ ] **P3-09 Hades** — alle aktiven Schatten für Avatar-Dauer permanent

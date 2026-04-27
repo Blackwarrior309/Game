@@ -48,6 +48,13 @@ public class BuildingBase : MonoBehaviour
         if (hp <= 0f) Destroy_();
     }
 
+    // Heilen — kappt sauber bei maxHp. Genutzt z.B. von der war_strategy-
+    // Synergie (Berserker heilt Gebäude statt sie unzerstörbar zu machen).
+    public virtual void Heal(float amount)
+    {
+        hp = Mathf.Min(maxHp, hp + Mathf.Max(0f, amount));
+    }
+
     void Destroy_()
     {
         OnBuildingDestroyed?.Invoke(this);
