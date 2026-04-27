@@ -114,6 +114,11 @@ public abstract class TurretBase : BuildingBase
         fireRateMultiplier = 1f;
     }
 
+    // Athena-Intervention 1: Reichweiten-Boost. AthenaInterventions setzt
+    // den Wert per Coroutine, snapshottet vorher, stellt nach Ablauf wieder her.
+    public float DetectionRadius => detectionRadius;
+    public void SetDetectionRadius(float value) => detectionRadius = value;
+
     protected abstract void Fire();
 }
 

@@ -76,8 +76,8 @@ lehnt Hephaistos sowieso ab, der Spawn-Pfad wird nie betreten.)
 ## Offen (in den Phase-3-Tasks pro Gott)
 
 - [x] **P3-05 Zeus** — Kettenblitz-Avatar + Blitzeinschlag/Donnersturm-Interventionen
-- [ ] **P3-06 Athena** — Pyros-Barriere, Turm-Buff (`SetFireRateMultiplier`),
-      Strategos-Schild (Spielerschaden absorbieren)
+- [x] **P3-06 Athena** — Pyros-Barriere-Avatar + HP-Regen-Passiv +
+      Strategische-Übersicht/Tempo-Schub-Interventionen
 - [ ] **P3-07 Ares** — Kill-Streak-Speed, Kriegs-Strategie-Synergie
       (Gebäude unzerstörbar während Berserker), Forced-Target-Aggro
 - [ ] **P3-08 Poseidon** — gerichtete Linien-Flutwelle, Wassermauern als

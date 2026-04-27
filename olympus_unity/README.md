@@ -59,6 +59,7 @@ Alle Manager-Scripts auf ein einziges **"Singletons" GameObject**:
 - `LevelUpSystem`
 - `HephaistosInterventions` (hört auf Favor-Schwellen, spawnt LavaBoulder/LavaPuddle)
 - `ZeusInterventions` (Blitzeinschlag bei 25, Donnersturm bei 75)
+- `AthenaInterventions` (Passiv-HP-Regen + Strategische-Übersicht 25 + Tempo-Schub 75)
 - `AvatarSpawnSystem` (instanziiert 5 Götter-Avatare, Prefabs im Inspector zuweisen)
 - `ShadowAllySpawner` (Hades-Schatten via `GameEvents.OnSpawnShadowAlly`)
 
