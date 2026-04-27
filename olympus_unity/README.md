@@ -58,6 +58,8 @@ Alle Manager-Scripts auf ein einziges **"Singletons" GameObject**:
 - `WaveManager`
 - `LevelUpSystem`
 - `HephaistosInterventions` (hört auf Favor-Schwellen, spawnt LavaBoulder/LavaPuddle)
+- `AvatarSpawnSystem` (instanziiert 5 Götter-Avatare, Prefabs im Inspector zuweisen)
+- `ShadowAllySpawner` (Hades-Schatten via `GameEvents.OnSpawnShadowAlly`)
 
 Dieses GameObject mit **DontDestroyOnLoad** bleibt über Szenen erhalten.
 
