@@ -81,7 +81,7 @@ lehnt Hephaistos sowieso ab, der Spawn-Pfad wird nie betreten.)
 - [x] **P3-07 Ares** — Kill-Streak-Avatar mit Aggro-Pull + Kriegsschrei/
       Berserker-Interventionen, Kill-Streak-Passiv über damageMultiplier,
       war_strategy-Synergie heilt Gebäude per BuildingBase.Heal
-- [ ] **P3-08 Poseidon** — gerichtete Linien-Flutwelle, Wassermauern als
-      kurzlebige NavMesh-Obstacles
-- [ ] **P3-09 Hades** — alle aktiven Schatten für Avatar-Dauer permanent
-      (`ShadowAllySpawner.MakeShadowsPermanent`), Seelen-Tor-AoE
+- [x] **P3-08 Poseidon** — Radial-Flutwelle + Vorwärts-Kegel-Slow als
+      Wassermauer-Avatar; Flutwelle/Erdspaltung-Interventionen
+- [x] **P3-09 Hades** — Avatar markiert alle Schatten beim Spawn und
+      bei jedem Special permanent; Massen-Beschwörung-/Seelen-Sog-Interventionen
