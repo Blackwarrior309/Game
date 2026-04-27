@@ -23,7 +23,7 @@ olympus_unity/
         └── UI/                    # HUD/, MainMenu/, BuildMenu/, SmithyMenu/, EndScreens
 ```
 
-The repo-root `README.md` is a one-line stub (`# Game`). The real setup guide is `olympus_unity/README.md`.
+The repo-root `README.md` is the project front door — it carries the phase status table and a "wie mitentwickeln"-Kurzanleitung. The Unity-side setup details (layers, tags, prefab assembly) live in `olympus_unity/README.md`.
 
 ## No Build / Test / Lint Tooling in This Repo
 
@@ -62,9 +62,39 @@ Core managers (all in `Assets/Scripts/Core/`):
 - **Reset on new run.** Anything that holds run state must implement `Reset()` and be invoked from `GameManager.StartNewRun()`.
 - **Setup docs alongside code.** `Buildings/BUILDING_SETUP.md` and `Enemies/ENEMY_SETUP.md` document required prefab structure, NavMeshAgent params, child transforms (`TurretHead`, `ShootPoint`, `StompCenter`, etc.), and inspector wiring. When adding/changing a prefab-driven script, update the matching SETUP.md so the Unity-side wiring stays documented.
 
-### Extension Points (per phase1 README)
+### Project Status (per phase, ~74 % overall — 81 / 109 tasks)
 
-Implemented: phase 1 core, all enemies through Kronos, all building types, HUD, build/smithy menus, main menu. Open: full WeaponManager + legendary application, temple-tier upgrades (1–3), Prometheus artifact wiring through an ArtifactManager, audio, camera shake, and animator hookup. New gods/synergies/waves should be added to `FavorManager.God`, `SynergySystem.BuildSynergyTable()`, and `WaveManager.BuildWaveTable()` respectively.
+The README's status table is the canonical reference; this is what each phase means architecturally so you know where to plug new code in.
+
+| # | Phase                          | Status     | Where to plug in                                                                                                  |
+|---|--------------------------------|------------|--------------------------------------------------------------------------------------------------------------------|
+| 1 | Core Prototype                 | 11 / 12    | Player loop, XP, waves 1–3, Pyros, win/lose. **Open:** Arena terrain layout (no script work — Unity scene).        |
+| 2 | Building System                | 13 / 13 ✓  | All building types + build menu + placement.                                                                       |
+| 3 | Favor & Götter (Basis)         | 6 / 13     | Data + HUD + main-god select + temple build/destroy + favor reset done. **Open:** full Zeus/Athena/Ares/Poseidon/Hades behaviour (interventions at 25/75 + avatar AI + temple-tier upgrades 1–3). Passives are partially inlined in `PlayerController`/`EnemyBase`/`Temple`. |
+| 4 | Hephaistos & Schmiede          | 18 / 20    | Forge, smithy menu, all 7 legendaries, ore + ore deposits. **Open:** Hephaistos interventions 1+2 (Schmiede-Burst, Vulkan-Zorn). |
+| 5 | Synergien                      | 14 / 14 ✓  | All 10 synergies + activation/deactivation flow done.                                                              |
+| 6 | Vollständige Feinde & Wellen   | 5 / 7      | Stone Golem, Shadow Wraith, Medusa, Cyclops, waves 1–9 done. **Open:** Welle 9 Gigant-Vorläufer mini-boss; enemy climbing on buildings. |
+| 7 | Kronos Endboss                 | 11 / 14    | All 3 phases + time mechanics + boss UI implemented. **Open:** Kronos model/animations, Oboloi reward calc, voice-lines. |
+| 8 | Meta-Progression & Polish      | 3 / 16     | HUD + legendary visual frame + ore deposit visuals done. **Open:** WeaponManager + 7 base weapons, full ArtifactManager (9 artefakte incl. Prometheus), evolution-upgrade system, Oboloi currency + meta-upgrade menu, Audio/Music systems, wave balance pass, Schmiede-Modell/Tempel-Slot-Markierungen, arena-shrink VFX. |
+
+### Adding to extensible tables
+
+- **New god** → add to `FavorManager.God` enum + `GodNames` array + handle in HUD favor panel + main-menu `GodData`.
+- **New synergy** → add to `SynergySystem.BuildSynergyTable()` (id, German display name, two gods); gate behaviour elsewhere with `SynergySystem.Instance.IsActive("id")`.
+- **New wave** → add a `WaveData` row to `WaveManager.BuildWaveTable()` and (if a new enemy type) a prefab field + `prefabMap` entry in `Start()`.
+- **New levelup upgrade** → both a `case "id":` in `LevelUpSystem.ApplyUpgrade(...)` AND a matching `UpgradeData` ScriptableObject (`Assets > Create > OlympusSurvivors/UpgradeData`) dropped into the inspector's `upgradePool`.
+- **New building** → add to `BuildMenuController.AllBuildings` (id, costs, category, `CanBuild` validator), a prefab id mapping in the inspector list `buildingPrefabs`, and a `BuildingBase` subclass if behaviour is custom. Update `Buildings/BUILDING_SETUP.md`.
+- **New enemy** → subclass `EnemyBase`, add a serialised prefab field on `WaveManager` + `prefabMap[id] = prefab`, document required transforms (`ShootPoint` etc.) in `Enemies/ENEMY_SETUP.md`.
+
+### Architectural extension points still missing
+
+These don't exist as classes yet — when phase 8 work begins, they need to be created on the `Singletons` GameObject and wired through `GameEvents`:
+
+- **`WeaponManager`** — currently each weapon's logic is inlined in `PlayerController` (auto-attack uses `PlayerState.damage` directly). To support 7 base weapons + evolutions, this needs a real manager that owns equipped weapons and applies legendary modifiers from the smithy.
+- **`ArtifactManager`** — Prometheus artifact (`artifact_prometheus` in `LevelUpSystem`) currently has an empty case; a manager is needed to broadcast multipliers (e.g. tower damage +20%) that turrets/towers query at fire-time.
+- **`AudioManager`** — no audio code anywhere yet. Should subscribe to `GameEvents` (and `*State` events) for SFX cues; sound files would live in `Assets/Audio/`.
+- **`CameraShake`** — referenced by `BUILDING_SETUP.md` (catapult impact) and `ENEMY_SETUP.md` (Cyclops stomp / Kronos) but not implemented.
+- **`GlobalSlowManager`** — referenced by `ENEMY_SETUP.md` for Kronos's slow-aura affecting towers; currently the slow only affects movement via per-enemy `slowFactor`.
 
 ## Git Workflow for This Task Stream
 
