@@ -91,7 +91,7 @@ The README's status table is the canonical reference; this is what each phase me
 
 These don't exist as classes yet — when phase 8 work begins, they need to be created on the `Singletons` GameObject and wired through `GameEvents`:
 
-- **`WeaponManager`** — currently each weapon's logic is inlined in `PlayerController` (auto-attack uses `PlayerState.damage` directly). To support 7 base weapons + evolutions, this needs a real manager that owns equipped weapons and applies legendary modifiers from the smithy.
+- **`WeaponManager`** — foundation now in `Core/WeaponManager.cs` (7 base-weapon pool, equipped state, smithy-upgrade + legendary hooks, `GetCurrentDamage/FireRate/Range`). Still pending: switch `PlayerController.HandleAutoAttack` from reading `PlayerState.damage` directly to `WeaponManager.Instance.GetCurrentDamage()`, and add evolution-trigger logic (P8-06).
 - **`ArtifactManager`** — Prometheus artifact (`artifact_prometheus` in `LevelUpSystem`) currently has an empty case; a manager is needed to broadcast multipliers (e.g. tower damage +20%) that turrets/towers query at fire-time.
 - **`AudioManager`** — no audio code anywhere yet. Should subscribe to `GameEvents` (and `*State` events) for SFX cues; sound files would live in `Assets/Audio/`.
 - **`CameraShake`** — referenced by `BUILDING_SETUP.md` (catapult impact) and `ENEMY_SETUP.md` (Cyclops stomp / Kronos) but not implemented.

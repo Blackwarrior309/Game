@@ -57,6 +57,7 @@ Alle Manager-Scripts auf ein einziges **"Singletons" GameObject**:
 - `SynergySystem`
 - `WaveManager`
 - `LevelUpSystem`
+- `WeaponManager` (7 Basis-Waffen, Equipped-State, Schmiede-Hooks)
 - `HephaistosInterventions` (hört auf Favor-Schwellen, spawnt LavaBoulder/LavaPuddle)
 - `ZeusInterventions` (Blitzeinschlag bei 25, Donnersturm bei 75)
 - `AthenaInterventions` (Passiv-HP-Regen + Strategische-Übersicht 25 + Tempo-Schub 75)
