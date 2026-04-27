@@ -19,6 +19,7 @@ public class WaveManager : MonoBehaviour
     [SerializeField] GameObject wraithPrefab;
     [SerializeField] GameObject medusaPrefab;
     [SerializeField] GameObject cyclopsPrefab;
+    [SerializeField] GameObject giantPrefab;       // Welle 9 Mini-Boss
     [SerializeField] GameObject kronosPrefab;
 
     // ── State ──────────────────────────────────────────────────────────────
@@ -75,8 +76,8 @@ public class WaveManager : MonoBehaviour
             new(5f,  false, new(){ new("wraith",  4,  0.5f),  new("medusa",  4, 0.8f), new("satyr", 8, 0.3f) }),
             // Welle 8
             new(5f,  false, new(){ new("golem",   5,  0.8f),  new("wraith",  5, 0.5f), new("medusa",3, 1.0f) }),
-            // Welle 9 — Gigant-Vorläufer
-            new(10f, false, new(){ new("cyclops", 2,  2.0f),  new("satyr",   15,0.2f) }),
+            // Welle 9 — Gigant-Vorläufer (Mini-Boss mit Slow-Aura, Vorschau auf Kronos)
+            new(10f, false, new(){ new("giant",   1,  0.0f),  new("cyclops", 1,  3.0f), new("satyr", 12, 0.25f) }),
             // Welle 10 — Kronos
             new(15f, true,  new(){ new("kronos",  1,  0.0f) }),
         };
@@ -103,6 +104,7 @@ public class WaveManager : MonoBehaviour
         prefabMap["wraith"]  = wraithPrefab;
         prefabMap["medusa"]  = medusaPrefab;
         prefabMap["cyclops"] = cyclopsPrefab;
+        prefabMap["giant"]   = giantPrefab;
         prefabMap["kronos"]  = kronosPrefab;
 
         GameEvents.OnEnemyKilled += OnEnemyDied;

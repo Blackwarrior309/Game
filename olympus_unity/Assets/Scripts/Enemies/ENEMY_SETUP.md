@@ -105,6 +105,28 @@ Cyclops (NavMeshAgent)
 
 ---
 
+### GiantPrecursor.prefab (Welle 9 Mini-Boss)
+```
+GiantPrecursor (NavMeshAgent)
+├── NavMeshAgent (Speed=2.5, StoppingDist=3.5, Radius=1.1)
+├── CapsuleCollider (Height=4.0, Radius=1.1, Layer: Enemy)
+├── ParticleSystem "AuraFX" (lila/violetter Zeit-Staub um den Gigant, Radius ~12m)
+├── Mesh (großer dunkler Cube/Capsule, Scale 1.4×2.0×1.4)
+└── GiantPrecursor.cs
+    ├── auraRadius:           12
+    ├── auraSlowFactor:        0.75   (Spieler & Türme × 0.75)
+    ├── auraTickInterval:      0.4
+    ├── auraRefreshDuration:   0.55
+    └── buildingDamageMultiplier: 2
+```
+**Gigant ist ein Mini-Boss → HUDManager.ShowBossPanel(true).**
+Slow-Aura ist eine *Vorschau* auf Kronos Phase-1 — wirkt kontinuierlich, keine Zeit-Blasen.
+Verlangsamt Spieler-`PlayerState.moveSpeed` direkt; Türme bekommen einen sich
+selbst auffrischenden Fire-Rate-Slow über `TurretBase.SetFireRateMultiplier`.
+Beim Tod räumt der Gigant den Spieler-Slow auf (Cleanup-Sicherung).
+
+---
+
 ### Kronos.prefab
 ```
 Kronos (NavMeshAgent)
@@ -184,6 +206,7 @@ Singletons
 - [x] ShadowWraith — Teleport, Mauern ignorieren
 - [x] MedusaArcher — Fernkampf, Pyros-Targeting
 - [x] Cyclops — Mini-Boss, Stomp + Roar
+- [x] GiantPrecursor — Welle-9-Mini-Boss, kontinuierliche Slow-Aura
 - [x] Kronos — 3-Phasen-Endboss + Zeit-Mechaniken
 - [x] TitanServant — Kronos Phase 3, 5 Gott-Varianten
 - [x] ShadowAlly — Hades-Verbündeter
