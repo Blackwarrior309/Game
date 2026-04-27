@@ -75,7 +75,7 @@ lehnt Hephaistos sowieso ab, der Spawn-Pfad wird nie betreten.)
 
 ## Offen (in den Phase-3-Tasks pro Gott)
 
-- [ ] **P3-05 Zeus** — Kettenblitz, Sky-Fire-Synergie-Hook, Storm-Flood-Slow
+- [x] **P3-05 Zeus** — Kettenblitz-Avatar + Blitzeinschlag/Donnersturm-Interventionen
 - [ ] **P3-06 Athena** — Pyros-Barriere, Turm-Buff (`SetFireRateMultiplier`),
       Strategos-Schild (Spielerschaden absorbieren)
 - [ ] **P3-07 Ares** — Kill-Streak-Speed, Kriegs-Strategie-Synergie

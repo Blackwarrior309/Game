@@ -63,7 +63,7 @@ Core managers (all in `Assets/Scripts/Core/`):
 - **Reset on new run.** Anything that holds run state must implement `Reset()` and be invoked from `GameManager.StartNewRun()`.
 - **Setup docs alongside code.** `Buildings/BUILDING_SETUP.md` and `Enemies/ENEMY_SETUP.md` document required prefab structure, NavMeshAgent params, child transforms (`TurretHead`, `ShootPoint`, `StompCenter`, etc.), and inspector wiring. When adding/changing a prefab-driven script, update the matching SETUP.md so the Unity-side wiring stays documented.
 
-### Project Status (per phase, ~78 % overall — 85 / 109 tasks)
+### Project Status (per phase, ~79 % overall — 86 / 109 tasks)
 
 The README's status table is the canonical reference; this is what each phase means architecturally so you know where to plug new code in.
 
@@ -71,7 +71,7 @@ The README's status table is the canonical reference; this is what each phase me
 |---|--------------------------------|------------|--------------------------------------------------------------------------------------------------------------------|
 | 1 | Core Prototype                 | 11 / 12    | Player loop, XP, waves 1–3, Pyros, win/lose. **Open:** Arena terrain layout (no script work — Unity scene).        |
 | 2 | Building System                | 13 / 13 ✓  | All building types + build menu + placement.                                                                       |
-| 3 | Favor & Götter (Basis)         | 7 / 13     | Data + HUD + main-god select + temple build/destroy + favor reset + avatar-spawn-system done (`Gods/AvatarSpawnSystem.cs` + `Gods/Avatars/AvatarBase.cs` + 5 stub avatars). **Open:** full per-god behaviour (interventions at 25/75 + god-specific avatar special-attack AI in `Gods/Avatars/<God>Avatar.DoSpecialAttack`) + temple-tier upgrades 1–3. Passives are partially inlined in `PlayerController`/`EnemyBase`/`Temple`. |
+| 3 | Favor & Götter (Basis)         | 8 / 13     | Data + HUD + main-god select + temple build/destroy + favor reset + avatar-spawn-system + **Zeus voll** (`Gods/ZeusInterventions.cs` + chain-lightning `ZeusAvatar`). **Open:** Athena/Ares/Poseidon/Hades full (interventions at 25/75 + avatar AI in `Gods/Avatars/<God>Avatar.DoSpecialAttack`) + temple-tier upgrades 1–3. Passives are partially inlined in `PlayerController`/`EnemyBase`/`Temple`. |
 | 4 | Hephaistos & Schmiede          | 20 / 20 ✓  | Forge, smithy menu, all 7 legendaries, ore + ore deposits, both Hephaistos interventions (Schmiede-Burst via `PlayerState.damageMultiplier`, Vulkan-Zorn via `Gods/HephaistosInterventions.cs` + `Combat/LavaPuddle.cs`). |
 | 5 | Synergien                      | 14 / 14 ✓  | All 10 synergies + activation/deactivation flow done.                                                              |
 | 6 | Vollständige Feinde & Wellen   | 6 / 7      | Stone Golem, Shadow Wraith, Medusa, Cyclops, GiantPrecursor (Welle 9 mini-boss with slow-aura), waves 1–9 done. **Open:** enemy climbing on buildings (mostly Unity NavMesh-Off-Mesh-Link config). |
