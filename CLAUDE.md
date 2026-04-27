@@ -91,7 +91,7 @@ The README's status table is the canonical reference; this is what each phase me
 
 These don't exist as classes yet — when phase 8 work begins, they need to be created on the `Singletons` GameObject and wired through `GameEvents`:
 
-- **`WeaponManager`** — foundation now in `Core/WeaponManager.cs` (7 base-weapon pool, equipped state, smithy-upgrade + legendary hooks, `GetCurrentDamage/FireRate/Range`). Still pending: switch `PlayerController.HandleAutoAttack` from reading `PlayerState.damage` directly to `WeaponManager.Instance.GetCurrentDamage()`, and add evolution-trigger logic (P8-06).
+- **`WeaponManager`** — foundation in `Core/WeaponManager.cs` (7 base-weapon pool, equipped state, smithy-upgrade + legendary hooks). `PlayerController.HandleAutoAttack`/`DoAttack`/`TriggerZeusLightning` now read damage and fire-rate via `WeaponManager.Instance.GetCurrentDamage()` / `GetCurrentFireRate()` (with `PlayerState`-fallback for safety); `GameManager.StartNewRun` resets it. Still pending: P8-06 evolution-trigger logic when a weapon is picked 3× in level-up choices.
 - **`ArtifactManager`** — Prometheus artifact (`artifact_prometheus` in `LevelUpSystem`) currently has an empty case; a manager is needed to broadcast multipliers (e.g. tower damage +20%) that turrets/towers query at fire-time.
 - **`AudioManager`** — no audio code anywhere yet. Should subscribe to `GameEvents` (and `*State` events) for SFX cues; sound files would live in `Assets/Audio/`.
 - **`CameraShake`** — referenced by `BUILDING_SETUP.md` (catapult impact) and `ENEMY_SETUP.md` (Cyclops stomp / Kronos) but not implemented.
