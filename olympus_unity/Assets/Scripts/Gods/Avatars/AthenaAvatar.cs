@@ -1,40 +1,74 @@
 // AthenaAvatar.cs
 // Ablegen in: Assets/Scripts/Gods/Avatars/AthenaAvatar.cs
-// Athena-Avatar: strategischer Beschützer — heilt den Pyros und schwächt
-// Feinde in der Nähe. Stub-Verhalten; volle KI in P3-06.
+// Athena-Avatar: strategische Beschützerin. Pyros-Barriere = Pyros wird
+// pro Tick geheilt UND Feinde im Pyros-Nahbereich werden weggebrannt.
+// Zusätzlich gibt der Avatar dem Spieler temporäre Rüstung.
 
 using UnityEngine;
+using System.Collections;
 
 public class AthenaAvatar : AvatarBase
 {
-    [Header("Athena-Special: Pyros-Schutz")]
-    [SerializeField] float pyrosHealAmount = 25f;
-    [SerializeField] float wisdomBurstRadius = 5f;
-    [SerializeField] float wisdomBurstDamage = 40f;
+    [Header("Pyros-Barriere")]
+    [SerializeField] float pyrosHealAmount      = 25f;
+    [SerializeField] float barrierRadius        = 8f;     // um Pyros
+    [SerializeField] float barrierDamage        = 75f;
+
+    [Header("Wisdom-Burst (am Ziel)")]
+    [SerializeField] float burstRadius          = 5f;
+    [SerializeField] float burstDamage          = 40f;
+
+    [Header("Spieler-Rüstung")]
+    [SerializeField] float armorBonus           = 20f;
+    // Buff-Dauer = specialCooldown, damit Buffs nicht überlappen.
+
+    bool armorBuffActive = false;
 
     protected override void Awake()
     {
-        GodId          = FavorManager.God.Athena;
-        moveSpeed      = 5f;
-        damage         = 40f;
-        attackCooldown = 0.9f;
+        GodId           = FavorManager.God.Athena;
+        moveSpeed       = 5f;
+        damage          = 40f;
+        attackCooldown  = 0.9f;
         specialCooldown = 6f;
         base.Awake();
     }
 
     protected override void DoSpecialAttack()
     {
-        // Platzhalter: Pyros heilen + sanfte AoE auf Feinde im Umkreis.
-        // P3-06 ergänzt Pyros-Barriere, Turm-Buff, Strategos-Schild.
-        var pyros = GameObject.FindGameObjectWithTag("Pyros")?.GetComponent<Pyros>();
-        pyros?.Heal(pyrosHealAmount);
+        // 1) Pyros heilen + Feinde im Pyros-Umkreis ausbrennen ───────────
+        var pyrosGO = GameObject.FindGameObjectWithTag("Pyros");
+        if (pyrosGO != null)
+        {
+            pyrosGO.GetComponent<Pyros>()?.Heal(pyrosHealAmount);
 
+            Collider[] near = Physics.OverlapSphere(pyrosGO.transform.position,
+                barrierRadius, LayerMask.GetMask("Enemy"));
+            foreach (var hit in near)
+                hit.GetComponent<EnemyBase>()?.TakeDamage(barrierDamage);
+        }
+
+        // 2) Wisdom-Burst am aktuellen Ziel ───────────────────────────────
         if (currentTarget != null)
         {
             Collider[] hits = Physics.OverlapSphere(currentTarget.transform.position,
-                wisdomBurstRadius, LayerMask.GetMask("Enemy"));
+                burstRadius, LayerMask.GetMask("Enemy"));
             foreach (var hit in hits)
-                hit.GetComponent<EnemyBase>()?.TakeDamage(wisdomBurstDamage);
+                hit.GetComponent<EnemyBase>()?.TakeDamage(burstDamage);
         }
+
+        // 3) Spieler-Rüstung temporär anheben ─────────────────────────────
+        if (!armorBuffActive)
+            StartCoroutine(ArmorBuff(specialCooldown));
+    }
+
+    IEnumerator ArmorBuff(float duration)
+    {
+        armorBuffActive = true;
+        var ps = PlayerState.Instance;
+        ps.armor += armorBonus;
+        yield return new WaitForSeconds(duration);
+        ps.armor -= armorBonus;
+        armorBuffActive = false;
     }
 }

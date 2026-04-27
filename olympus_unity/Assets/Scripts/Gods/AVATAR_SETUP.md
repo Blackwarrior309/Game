@@ -75,12 +75,13 @@ lehnt Hephaistos sowieso ab, der Spawn-Pfad wird nie betreten.)
 
 ## Offen (in den Phase-3-Tasks pro Gott)
 
-- [ ] **P3-05 Zeus** — Kettenblitz, Sky-Fire-Synergie-Hook, Storm-Flood-Slow
-- [ ] **P3-06 Athena** — Pyros-Barriere, Turm-Buff (`SetFireRateMultiplier`),
-      Strategos-Schild (Spielerschaden absorbieren)
-- [ ] **P3-07 Ares** — Kill-Streak-Speed, Kriegs-Strategie-Synergie
-      (Gebäude unzerstörbar während Berserker), Forced-Target-Aggro
-- [ ] **P3-08 Poseidon** — gerichtete Linien-Flutwelle, Wassermauern als
-      kurzlebige NavMesh-Obstacles
-- [ ] **P3-09 Hades** — alle aktiven Schatten für Avatar-Dauer permanent
-      (`ShadowAllySpawner.MakeShadowsPermanent`), Seelen-Tor-AoE
+- [x] **P3-05 Zeus** — Kettenblitz-Avatar + Blitzeinschlag/Donnersturm-Interventionen
+- [x] **P3-06 Athena** — Pyros-Barriere-Avatar + HP-Regen-Passiv +
+      Strategische-Übersicht/Tempo-Schub-Interventionen
+- [x] **P3-07 Ares** — Kill-Streak-Avatar mit Aggro-Pull + Kriegsschrei/
+      Berserker-Interventionen, Kill-Streak-Passiv über damageMultiplier,
+      war_strategy-Synergie heilt Gebäude per BuildingBase.Heal
+- [x] **P3-08 Poseidon** — Radial-Flutwelle + Vorwärts-Kegel-Slow als
+      Wassermauer-Avatar; Flutwelle/Erdspaltung-Interventionen
+- [x] **P3-09 Hades** — Avatar markiert alle Schatten beim Spawn und
+      bei jedem Special permanent; Massen-Beschwörung-/Seelen-Sog-Interventionen

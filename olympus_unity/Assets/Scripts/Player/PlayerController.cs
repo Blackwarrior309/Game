@@ -142,9 +142,16 @@ public class PlayerController : MonoBehaviour
     }
 
     // ── Auto-Angriff ───────────────────────────────────────────────────────
+    // Schaden + Feuerrate kommen seit P8-05-Vorbereitung aus WeaponManager.
+    // Der WeaponManager bündelt BaseDamage × Level-Bonus × damageMultiplier
+    // und FireRate × attackSpeed, sodass alle Buffs (Schmiede-Burst,
+    // Berserker, Kill-Stacks) und Schmiede-Upgrades automatisch greifen.
     void HandleAutoAttack()
     {
-        float attackInterval = 1f / PlayerState.Instance.attackSpeed;
+        float fireRate = WeaponManager.Instance != null
+            ? WeaponManager.Instance.GetCurrentFireRate()
+            : PlayerState.Instance.attackSpeed;
+        float attackInterval = 1f / Mathf.Max(0.01f, fireRate);
         attackTimer += Time.deltaTime;
 
         UpdateTarget();
@@ -175,7 +182,9 @@ public class PlayerController : MonoBehaviour
         lookDir.y = 0f;
         if (lookDir.magnitude > 0.01f) transform.rotation = Quaternion.LookRotation(lookDir);
 
-        float finalDamage = PlayerState.Instance.damage * PlayerState.Instance.damageMultiplier;
+        float finalDamage = WeaponManager.Instance != null
+            ? WeaponManager.Instance.GetCurrentDamage()
+            : PlayerState.Instance.damage * PlayerState.Instance.damageMultiplier;
         currentTarget.TakeDamage(finalDamage);
 
         // Zeus-Passiv: jeder 10. Angriff = Blitzschlag AoE
@@ -197,7 +206,10 @@ public class PlayerController : MonoBehaviour
             var enemy = hit.GetComponent<EnemyBase>();
             if (enemy != null)
             {
-                enemy.TakeDamage(PlayerState.Instance.damage * PlayerState.Instance.damageMultiplier * 1.5f * multiplier);
+                float baseDmg = WeaponManager.Instance != null
+                    ? WeaponManager.Instance.GetCurrentDamage()
+                    : PlayerState.Instance.damage * PlayerState.Instance.damageMultiplier;
+                enemy.TakeDamage(baseDmg * 1.5f * multiplier);
                 enemy.SetMeta("killed_by_lightning", true);
                 // Gewitterflut-Synergie: Blitze verlangsamen
                 if (SynergySystem.Instance.IsActive("storm_flood"))

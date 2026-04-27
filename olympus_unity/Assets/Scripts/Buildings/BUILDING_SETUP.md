@@ -210,9 +210,29 @@ Temple (StaticBody3D)
 ├── BoxCollider (Layer: Building)
 ├── Mesh (Säulen-Tempel Platzhalter)
 └── Temple.cs
-    └── templeGodId: Zeus  ← Im Inspector setzen!
+    ├── templeGodId:    Zeus  ← Im Inspector setzen!
+    ├── interactRadius: 4
+    └── upgradeKey:     E
 ```
 5 Prefab-Varianten erstellen, je mit unterschiedlichem `templeGodId`.
+
+**Tempel-Upgrade (P3-12):** Spieler nähert sich (≤ 4 m) → **E** drückt → der
+Tempel hebt sich auf die nächste Stufe, sofern Asche reicht. Status pro Stufe:
+
+| Stufe | Asche-Kosten | Favor-Regen | Zeus-Auto-Blitz       | Hades-Auto-Schatten |
+|-------|--------------|-------------|------------------------|---------------------|
+| 1     | 150 (Bau)    | 2/min       | alle 20 s, 15 dmg     | alle 45 s           |
+| 2     | +200         | 3.5/min     | alle 15 s, 25 dmg     | alle 35 s           |
+| 3     | +300         | 5/min       | alle 10 s, 40 dmg     | alle 25 s           |
+
+`Temple.Level` liest live aus `FavorManager.GetTempleLevel(god)`, sodass die
+Auto-Coroutinen nicht neu gestartet werden müssen — sie greifen am Anfang
+jedes Loop-Durchgangs auf den aktuellen Level zu.
+
+Visuell empfiehlt es sich, das Mesh oder ein Child-`ParticleSystem` je nach
+Level zu skalieren (z.B. Säulen größer, Aura intensiver). Das ist Prefab-
+seitig und kann in einer `Animator`-Logik laufen, die `Temple.Level` als
+Parameter nutzt.
 
 ---
 
@@ -304,12 +324,12 @@ Auf Singletons-GameObject:
 - [x] WeaponUpgradeCardUI + LegendaryWeaponCardUI
 - [x] OreDeposit (E-Halten, Respawn, Lavameer-Synergie)
 - [x] HephaistosInterventions (Schmiede-Burst + Vulkan-Zorn, LavaBoulder + LavaPuddle)
+- [x] Tempel-Upgrade-System (Stufen 1–3 via E-Taste, Auto-Effekte skalieren live)
 
 ## Offen
 
 - [ ] WeaponManager (Waffen ausrüsten / Legendäre anwenden)
 - [ ] BuildingGhost Material (transparentes Shader-Material)
-- [ ] Tempel-Upgrade-System (Stufe 1–3, Kosten verdoppeln)
 - [ ] Prometheus-Feuer-Artefakt (Türme +20% via ArtifactManager)
 - [ ] AudioManager-Integration (Hammer, Funken, Opfer-Sound)
 - [ ] Kamera-Shake bei Katapult-Einschlag

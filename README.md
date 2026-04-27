@@ -10,18 +10,17 @@ Top-down Survivors-Action im antiken Griechenland: Verteidige die heilige Flamme
 |-------|-----------------------------------|----------------|
 | 1     | Core Prototype                    | 11 / 12        |
 | 2     | Building System                   | 13 / 13 ✓      |
-| 3     | Favor & Götter (Basis)            | 7 / 13         |
+| 3     | Favor & Götter (Basis)            | 13 / 13 ✓      |
 | 4     | Hephaistos & Schmiede             | 20 / 20 ✓      |
 | 5     | Synergien                         | 14 / 14 ✓      |
 | 6     | Vollständige Feinde & Wellen      | 6 / 7          |
 | 7     | Kronos Endboss                    | 11 / 14        |
 | 8     | Meta-Progression & Polish         | 3 / 16         |
-| **Gesamt** |                              | **85 / 109 (~78 %)** |
+| **Gesamt** |                              | **91 / 109 (~83 %)** |
 
 ### Was steht noch offen?
 
 - **Phase 1** — Arena-Layout (Terrain, runde 80-m-Arena)
-- **Phase 3** — Volle Götter-Implementierung: Avatar-Spawn-System steht (5 Stub-Avatare), Interventions-Mechaniken (25/75-Schwellen) und gott-spezifische Avatar-KI für Zeus/Athena/Ares/Poseidon/Hades fehlen noch (Passives sind teils da, siehe `PlayerController`/`EnemyBase`/`Temple`). Tempel-Upgrade-Stufen 1–3 fehlen.
 - **Phase 6** — Kletterverhalten auf Gebäuden (Off-Mesh-Links, primär Unity-NavMesh-Setup).
 - **Phase 7** — Kronos-Modell + Animationen, Boss-Rewards (Oboloi-Berechnung), Voice-Lines.
 - **Phase 8** — Oboloi-Meta-Currency, Meta-Upgrade-Menü, vollständige Artefakte (9) und Basis-Waffen (7), Evolutions-Upgrades, Audio/Musik, Wellen-Balance, diverse VFX.

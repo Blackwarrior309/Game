@@ -63,7 +63,7 @@ Core managers (all in `Assets/Scripts/Core/`):
 - **Reset on new run.** Anything that holds run state must implement `Reset()` and be invoked from `GameManager.StartNewRun()`.
 - **Setup docs alongside code.** `Buildings/BUILDING_SETUP.md` and `Enemies/ENEMY_SETUP.md` document required prefab structure, NavMeshAgent params, child transforms (`TurretHead`, `ShootPoint`, `StompCenter`, etc.), and inspector wiring. When adding/changing a prefab-driven script, update the matching SETUP.md so the Unity-side wiring stays documented.
 
-### Project Status (per phase, ~78 % overall — 85 / 109 tasks)
+### Project Status (per phase, ~83 % overall — 91 / 109 tasks)
 
 The README's status table is the canonical reference; this is what each phase means architecturally so you know where to plug new code in.
 
@@ -71,7 +71,7 @@ The README's status table is the canonical reference; this is what each phase me
 |---|--------------------------------|------------|--------------------------------------------------------------------------------------------------------------------|
 | 1 | Core Prototype                 | 11 / 12    | Player loop, XP, waves 1–3, Pyros, win/lose. **Open:** Arena terrain layout (no script work — Unity scene).        |
 | 2 | Building System                | 13 / 13 ✓  | All building types + build menu + placement.                                                                       |
-| 3 | Favor & Götter (Basis)         | 7 / 13     | Data + HUD + main-god select + temple build/destroy + favor reset + avatar-spawn-system done (`Gods/AvatarSpawnSystem.cs` + `Gods/Avatars/AvatarBase.cs` + 5 stub avatars). **Open:** full per-god behaviour (interventions at 25/75 + god-specific avatar special-attack AI in `Gods/Avatars/<God>Avatar.DoSpecialAttack`) + temple-tier upgrades 1–3. Passives are partially inlined in `PlayerController`/`EnemyBase`/`Temple`. |
+| 3 | Favor & Götter (Basis)         | 13 / 13 ✓  | All 5 gods full + temple-tier upgrades 1–3. Per-god `Gods/<God>Interventions.cs` + `Gods/Avatars/<God>Avatar`. Tempel-Upgrade via `Temple.TryUpgrade` (E-Taste im 4-m-Radius); `Temple.Level` liest live aus `FavorManager.GetTempleLevel`, sodass die Auto-Coroutinen (Zeus-Blitz, Hades-Schatten) ohne Neustart skalieren. Earlier passives (Zeus 10th-hit lightning, Hades 15 % shadow on kill, Poseidon slow on hit) remain inlined in `PlayerController`/`EnemyBase`. |
 | 4 | Hephaistos & Schmiede          | 20 / 20 ✓  | Forge, smithy menu, all 7 legendaries, ore + ore deposits, both Hephaistos interventions (Schmiede-Burst via `PlayerState.damageMultiplier`, Vulkan-Zorn via `Gods/HephaistosInterventions.cs` + `Combat/LavaPuddle.cs`). |
 | 5 | Synergien                      | 14 / 14 ✓  | All 10 synergies + activation/deactivation flow done.                                                              |
 | 6 | Vollständige Feinde & Wellen   | 6 / 7      | Stone Golem, Shadow Wraith, Medusa, Cyclops, GiantPrecursor (Welle 9 mini-boss with slow-aura), waves 1–9 done. **Open:** enemy climbing on buildings (mostly Unity NavMesh-Off-Mesh-Link config). |
@@ -91,7 +91,7 @@ The README's status table is the canonical reference; this is what each phase me
 
 These don't exist as classes yet — when phase 8 work begins, they need to be created on the `Singletons` GameObject and wired through `GameEvents`:
 
-- **`WeaponManager`** — currently each weapon's logic is inlined in `PlayerController` (auto-attack uses `PlayerState.damage` directly). To support 7 base weapons + evolutions, this needs a real manager that owns equipped weapons and applies legendary modifiers from the smithy.
+- **`WeaponManager`** — foundation in `Core/WeaponManager.cs` (7 base-weapon pool, equipped state, smithy-upgrade + legendary hooks). `PlayerController.HandleAutoAttack`/`DoAttack`/`TriggerZeusLightning` now read damage and fire-rate via `WeaponManager.Instance.GetCurrentDamage()` / `GetCurrentFireRate()` (with `PlayerState`-fallback for safety); `GameManager.StartNewRun` resets it. Still pending: P8-06 evolution-trigger logic when a weapon is picked 3× in level-up choices.
 - **`ArtifactManager`** — Prometheus artifact (`artifact_prometheus` in `LevelUpSystem`) currently has an empty case; a manager is needed to broadcast multipliers (e.g. tower damage +20%) that turrets/towers query at fire-time.
 - **`AudioManager`** — no audio code anywhere yet. Should subscribe to `GameEvents` (and `*State` events) for SFX cues; sound files would live in `Assets/Audio/`.
 - **`CameraShake`** — referenced by `BUILDING_SETUP.md` (catapult impact) and `ENEMY_SETUP.md` (Cyclops stomp / Kronos) but not implemented.

@@ -57,7 +57,13 @@ Alle Manager-Scripts auf ein einziges **"Singletons" GameObject**:
 - `SynergySystem`
 - `WaveManager`
 - `LevelUpSystem`
+- `WeaponManager` (7 Basis-Waffen, Equipped-State, Schmiede-Hooks)
 - `HephaistosInterventions` (hört auf Favor-Schwellen, spawnt LavaBoulder/LavaPuddle)
+- `ZeusInterventions` (Blitzeinschlag bei 25, Donnersturm bei 75)
+- `AthenaInterventions` (Passiv-HP-Regen + Strategische-Übersicht 25 + Tempo-Schub 75)
+- `AresInterventions` (Kill-Streak-Passiv + Kriegsschrei 25 + Berserker 75)
+- `PoseidonInterventions` (Flutwelle 25 + Erdspaltung 75)
+- `HadesInterventions` (Massen-Beschwörung 25 + Seelen-Sog 75)
 - `AvatarSpawnSystem` (instanziiert 5 Götter-Avatare, Prefabs im Inspector zuweisen)
 - `ShadowAllySpawner` (Hades-Schatten via `GameEvents.OnSpawnShadowAlly`)
 
