@@ -63,7 +63,7 @@ Core managers (all in `Assets/Scripts/Core/`):
 - **Reset on new run.** Anything that holds run state must implement `Reset()` and be invoked from `GameManager.StartNewRun()`.
 - **Setup docs alongside code.** `Buildings/BUILDING_SETUP.md` and `Enemies/ENEMY_SETUP.md` document required prefab structure, NavMeshAgent params, child transforms (`TurretHead`, `ShootPoint`, `StompCenter`, etc.), and inspector wiring. When adding/changing a prefab-driven script, update the matching SETUP.md so the Unity-side wiring stays documented.
 
-### Project Status (per phase, ~83 % overall — 91 / 109 tasks)
+### Project Status (per phase, ~86 % overall — 94 / 109 tasks)
 
 The README's status table is the canonical reference; this is what each phase means architecturally so you know where to plug new code in.
 
@@ -76,7 +76,7 @@ The README's status table is the canonical reference; this is what each phase me
 | 5 | Synergien                      | 14 / 14 ✓  | All 10 synergies + activation/deactivation flow done.                                                              |
 | 6 | Vollständige Feinde & Wellen   | 6 / 7      | Stone Golem, Shadow Wraith, Medusa, Cyclops, GiantPrecursor (Welle 9 mini-boss with slow-aura), waves 1–9 done. **Open:** enemy climbing on buildings (mostly Unity NavMesh-Off-Mesh-Link config). |
 | 7 | Kronos Endboss                 | 11 / 14    | All 3 phases + time mechanics + boss UI implemented. **Open:** Kronos model/animations, Oboloi reward calc, voice-lines. |
-| 8 | Meta-Progression & Polish      | 3 / 16     | HUD + legendary visual frame + ore deposit visuals done. **Open:** WeaponManager + 7 base weapons, full ArtifactManager (9 artefakte incl. Prometheus), evolution-upgrade system, Oboloi currency + meta-upgrade menu, Audio/Music systems, wave balance pass, Schmiede-Modell/Tempel-Slot-Markierungen, arena-shrink VFX. |
+| 8 | Meta-Progression & Polish      | 6 / 16     | HUD + legendary visual frame + ore deposit visuals + **AudioManager (P8-08) + music state machine (P8-09) + evolution-trigger (P8-06)** done. **Open:** Oboloi currency + meta-upgrade menu, per-weapon firing logic for the 7 base weapons (data is in `WeaponManager`), TurretBase artifact-multiplier wiring + the new artifact UpgradeData assets, wave balance pass, Schmiede-Modell, Tempel-Slot-Markierungen, arena-shrink VFX. |
 
 ### Adding to extensible tables
 
@@ -91,7 +91,7 @@ The README's status table is the canonical reference; this is what each phase me
 
 These don't exist as classes yet — when phase 8 work begins, they need to be created on the `Singletons` GameObject and wired through `GameEvents`:
 
-- **`WeaponManager`** — foundation in `Core/WeaponManager.cs` (7 base-weapon pool, equipped state, smithy-upgrade + legendary hooks). `PlayerController.HandleAutoAttack`/`DoAttack`/`TriggerZeusLightning` now read damage and fire-rate via `WeaponManager.Instance.GetCurrentDamage()` / `GetCurrentFireRate()` (with `PlayerState`-fallback for safety); `GameManager.StartNewRun` resets it. Still pending: P8-06 evolution-trigger logic when a weapon is picked 3× in level-up choices.
+- **`WeaponManager`** — foundation in `Core/WeaponManager.cs` (7 base-weapon pool, equipped state, smithy-upgrade + legendary hooks). `PlayerController.HandleAutoAttack`/`DoAttack`/`TriggerZeusLightning` now read damage and fire-rate via `WeaponManager.Instance.GetCurrentDamage()` / `GetCurrentFireRate()` (with `PlayerState`-fallback for safety); `GameManager.StartNewRun` resets it.
 - **`ArtifactManager`** — foundation in `Core/ArtifactManager.cs` with 9 artifacts catalog + `PickArtifact`/`HasArtifact` state + multiplier API (`GetTurretDamageMultiplier` for Prometheus, `GetSmithyPropertyMultiplier` for Hephaistos-Amboss, `GetSlowResistance` for Kronos-Scherbe). `LevelUpSystem.ApplyUpgrade` registers every artifact pick; `GameManager.StartNewRun` resets it. Still pending: turret-side wiring (TurretBase.Fire querying `GetTurretDamageMultiplier`) and the matching `UpgradeData` ScriptableObject assets for the new ids (`artifact_anvil`, `artifact_shard`).
 - **`AudioManager`** — foundation in `Core/AudioManager.cs` subscribes to `GameEvents` + the typed events of every manager (PlayerState, FavorManager, SynergySystem, WaveManager) and plays inspector-assigned `AudioClip`s through a round-robin `AudioSource` pool. Music is a separate `AudioSource` with a Calm → Wave → Boss state machine driven by `WaveManager.OnWaveStarted`/`OnBossWaveStarted`. Null clips are silently ignored, so the system runs cleanly before any audio files exist. Still pending: actual `.wav`/`.ogg` assets in `Assets/Audio/`, plus calling `AudioManager.Instance.PlayForgeHammer()` from `HephaistosForge` and `PlaySacrifice` from `SacrificeAltar` (those events have no GameEvent yet).
 - **`CameraShake`** — referenced by `BUILDING_SETUP.md` (catapult impact) and `ENEMY_SETUP.md` (Cyclops stomp / Kronos) but not implemented.

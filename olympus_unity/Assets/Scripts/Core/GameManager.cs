@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour
         SynergySystem.Instance.Reset();
         WeaponManager.Instance?.Reset();
         ArtifactManager.Instance?.Reset();
+        LevelUpSystem.Instance?.Reset();
         WaveManager.Instance.StartGame();
     }
 
