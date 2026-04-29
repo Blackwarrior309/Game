@@ -46,6 +46,12 @@ public class LevelUpSystem : MonoBehaviour
     public void ApplyUpgrade(string upgradeId)
     {
         var ps = PlayerState.Instance;
+
+        // ArtifactManager trackt jeden Pick (auch direkt-mutierende), damit
+        // HUD/Save/Synergien einen einheitlichen "welche Artefakte aktiv?"-
+        // Zustand abfragen können.
+        ArtifactManager.Instance?.PickArtifact(upgradeId);
+
         switch (upgradeId)
         {
             case "artifact_hp":
@@ -53,15 +59,22 @@ public class LevelUpSystem : MonoBehaviour
             case "artifact_speed":
                 ps.moveSpeed *= 1.2f; break;
             case "artifact_armor":
-                ps.armor += 2f; break;     // Vereinfacht
+                ps.armor += 2f; break;
             case "artifact_xp":
                 ps.xpMultiplier *= 1.25f; break;
             case "artifact_damage":
                 ps.damage *= 1.1f; break;
             case "artifact_oracle":
-                offersCount = 4; break;    // Delphi-Orakel
+                offersCount = 4; break;        // Delphi-Orakel
             case "artifact_prometheus":
-                // Türme +20% Schaden — via TurretDamageMultiplier-Komponente
+                // Türme fragen ArtifactManager.GetTurretDamageMultiplier()
+                // direkt ab — kein State hier nötig.
+                break;
+            case "artifact_anvil":
+                // HephaistosForge fragt ArtifactManager.GetSmithyPropertyMultiplier()
+                break;
+            case "artifact_shard":
+                // ApplySlow-Pfade fragen ArtifactManager.GetSlowResistance()
                 break;
             default:
                 Debug.Log("LevelUpSystem: Unbekanntes Upgrade: " + upgradeId);
