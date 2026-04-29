@@ -59,6 +59,7 @@ Alle Manager-Scripts auf ein einziges **"Singletons" GameObject**:
 - `LevelUpSystem`
 - `WeaponManager` (7 Basis-Waffen, Equipped-State, Schmiede-Hooks)
 - `ArtifactManager` (9 Artefakte, Pick-State, Multiplier-API für Türme/Schmiede/Slow-Resistenz)
+- `AudioManager` (SFX-Pool + Musik-State-Machine, hört auf alle GameEvents/Manager-Events)
 - `HephaistosInterventions` (hört auf Favor-Schwellen, spawnt LavaBoulder/LavaPuddle)
 - `ZeusInterventions` (Blitzeinschlag bei 25, Donnersturm bei 75)
 - `AthenaInterventions` (Passiv-HP-Regen + Strategische-Übersicht 25 + Tempo-Schub 75)
