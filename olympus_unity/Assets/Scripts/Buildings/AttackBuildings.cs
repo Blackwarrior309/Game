@@ -119,6 +119,16 @@ public abstract class TurretBase : BuildingBase
     public float DetectionRadius => detectionRadius;
     public void SetDetectionRadius(float value) => detectionRadius = value;
 
+    // Effektiver Turm-Schaden inkl. Prometheus-Feuer-Artefakt-Multiplier.
+    // Subklassen rufen das in ihrer Fire()-Methode auf statt turretDamage direkt.
+    protected float CurrentTurretDamage()
+    {
+        float dmg = turretDamage;
+        if (ArtifactManager.Instance != null)
+            dmg *= ArtifactManager.Instance.GetTurretDamageMultiplier();
+        return dmg;
+    }
+
     protected abstract void Fire();
 }
 
@@ -153,12 +163,7 @@ public class ArcherTower : TurretBase
         var arrow = Instantiate(arrowPrefab, origin, Quaternion.LookRotation(dir));
         var proj  = arrow.GetComponent<ProjectileBase>();
 
-        float finalDamage = turretDamage;
-
-        // Prometheus-Feuer-Artefakt: +20% Turm-Schaden
-        // finalDamage *= ArtifactManager.Instance.TurretDamageMultiplier;
-
-        proj?.Initialize(dir, finalDamage, "player");  // "player" = schadet Feinden
+        proj?.Initialize(dir, CurrentTurretDamage(), "player");  // "player" = schadet Feinden
 
         Destroy(arrow, 4f);
     }
@@ -229,11 +234,12 @@ public class Catapult : TurretBase
 
     void DealAoEAtPosition(Vector3 pos)
     {
+        float dmg = CurrentTurretDamage();
         Collider[] hits = Physics.OverlapSphere(pos, aoeRadius, Physics.AllLayers);
         foreach (var hit in hits)
         {
             var enemy = hit.GetComponent<EnemyBase>();
-            if (enemy != null) enemy.TakeDamage(turretDamage);
+            if (enemy != null) enemy.TakeDamage(dmg);
         }
 
         // Visuellen Impact-Effekt spawnen (Partikel)
@@ -274,6 +280,7 @@ public class FireTower : TurretBase
     {
         if (currentTarget == null) return;
 
+        float dmg = CurrentTurretDamage();
         // AoE um Ziel
         Collider[] hits = Physics.OverlapSphere(
             currentTarget.transform.position, fireAoeRadius, LayerMask.GetMask("Enemy"));
@@ -284,7 +291,7 @@ public class FireTower : TurretBase
             if (enemy == null) continue;
 
             // Direktschaden
-            enemy.TakeDamage(turretDamage);
+            enemy.TakeDamage(dmg);
 
             // Feuer-DoT
             enemy.StartCoroutine(FireDoT(enemy));

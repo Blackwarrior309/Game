@@ -15,15 +15,15 @@ Top-down Survivors-Action im antiken Griechenland: Verteidige die heilige Flamme
 | 5     | Synergien                         | 14 / 14 ✓      |
 | 6     | Vollständige Feinde & Wellen      | 6 / 7          |
 | 7     | Kronos Endboss                    | 11 / 14        |
-| 8     | Meta-Progression & Polish         | 3 / 16         |
-| **Gesamt** |                              | **91 / 109 (~83 %)** |
+| 8     | Meta-Progression & Polish         | 6 / 16         |
+| **Gesamt** |                              | **94 / 109 (~86 %)** |
 
 ### Was steht noch offen?
 
 - **Phase 1** — Arena-Layout (Terrain, runde 80-m-Arena)
 - **Phase 6** — Kletterverhalten auf Gebäuden (Off-Mesh-Links, primär Unity-NavMesh-Setup).
 - **Phase 7** — Kronos-Modell + Animationen, Boss-Rewards (Oboloi-Berechnung), Voice-Lines.
-- **Phase 8** — Oboloi-Meta-Currency, Meta-Upgrade-Menü, vollständige Artefakte (9) und Basis-Waffen (7), Evolutions-Upgrades, Audio/Musik, Wellen-Balance, diverse VFX.
+- **Phase 8** — Oboloi-Meta-Currency, Meta-Upgrade-Menü, vollständige Artefakte-Wiring (TurretBase + Anvil/Shard-Assets), Basis-Waffen-Firing-Logik (7), Wellen-Balance, diverse VFX, Schmiede-Modell, Tempel-Slot-Markierungen.
 
 ## Repo-Struktur
 
